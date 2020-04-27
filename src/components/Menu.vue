@@ -17,6 +17,13 @@
           {{ item.name }}
         </b-navbar-item>
       </b-navbar-dropdown>
+      <b-navbar-item
+        to="https://google.com"
+        tag="a"
+        target="_blank"
+      >
+        Оператор - техник
+      </b-navbar-item>
     </template>
 
     <template
@@ -77,10 +84,6 @@
           },
           {
             name: 'Новости',
-            link: '#'
-          },
-          {
-            name: 'Оператор - техник',
             link: '#'
           }
         ]
