@@ -24,6 +24,14 @@
         </section>
       </template>
     </b-table>
+    <b-button
+      class="see-more is-fullwidth"
+      size="is-medium"
+      type="is-info"
+      @click="seeMore"
+    >
+      Показать ещё
+    </b-button>
   </section>
 </template>
 
@@ -40,6 +48,7 @@
         loading: true,
         sortField: null,
         sortOrder: null,
+        page: 0,
         head: [
           {
             field: 'phone',
@@ -89,9 +98,14 @@
       onSort(field, order) {
         this.sortField = field;
         this.sortOrder = order;
+        this.page = 0;
         this.getData();
       },
-      getData() {
+      seeMore() {
+        this.page += 1;
+        this.getData(true);
+      },
+      getData(more) {
         this.loading = true;
         const url = `${process.env.VUE_APP_API}admUsers/`;
         const config = {
@@ -99,7 +113,8 @@
             date_from: this.dateFrom,
             date_to: this.dateTo,
             sort_field: this.sortField,
-            sort_order: this.sortOrder
+            sort_order: this.sortOrder,
+            page: this.page
           },
           headers: {
             Authorization: `Token ${this.$store.state.token}`
@@ -108,7 +123,11 @@
         axios
           .get(url, config)
           .then((res) => {
-            this.data = res.data.resp;
+            if (more) {
+              this.data = this.data.concat(res.data.resp);
+            } else {
+              this.data = res.data.resp;
+            }
             this.loading = false;
           })
           .catch(() => {
@@ -118,3 +137,9 @@
     }
   };
 </script>
+
+<style scoped>
+  .see-more {
+    margin-top: 20px;
+  }
+</style>
