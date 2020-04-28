@@ -1,33 +1,45 @@
 <template>
   <section>
-    <a-table
-      :body="body"
-      :head="head"
+    <b-field label="Выберите дату">
+      <b-datepicker
+        v-model="dateFrom"
+        placeholder="Дата от"
+        icon="calendar-today"
+        editable
+      />
+    </b-field>
+    <b-table
+      :data="body"
+      :columns="head"
       :loading="loading"
-    />
+      :sorting="true"
+      :hoverable="true"
+      :mobile-cards="true"
+      backend-sorting
+      @sort="onSort"
+    >
+      <template slot="empty">
+        <section class="content has-text-grey has-text-centered">
+          <p>Данные не найдены</p>
+        </section>
+      </template>
+    </b-table>
   </section>
 </template>
 
 <script>
-  import ATable from './ATable';
+  import axios from 'axios';
 
   export default {
     name: 'UsersTable',
-    components: {
-      ATable
-    },
-    props: {
-      data: {
-        type: Array,
-        default() { return []; }
-      },
-      loading: {
-        type: Boolean,
-        required: true
-      }
-    },
     data() {
       return {
+        data: [],
+        dateFrom: null,
+        dateTo: null,
+        loading: true,
+        sortField: null,
+        sortOrder: null,
         head: [
           {
             field: 'phone',
@@ -35,11 +47,13 @@
           },
           {
             field: 'register_date',
-            label: 'Дата регистрации'
+            label: 'Дата регистрации',
+            sortable: true
           },
           {
-            field: 'coins_cnt',
-            label: 'Всего жетонов'
+            field: 'total_cnt',
+            label: 'Всего жетонов',
+            sortable: true
           },
           {
             field: 'balance',
@@ -57,9 +71,49 @@
           if (coinsCnt === null) {
             body[i].coins_cnt = 0;
           }
+          body[i].total_cnt = body[i].coins_cnt;
         }
 
         return body;
+      }
+    },
+    watch: {
+      dateFrom() {
+        this.getData();
+      }
+    },
+    mounted() {
+      this.getData();
+    },
+    methods: {
+      onSort(field, order) {
+        this.sortField = field;
+        this.sortOrder = order;
+        this.getData();
+      },
+      getData() {
+        this.loading = true;
+        const url = `${process.env.VUE_APP_API}admUsers/`;
+        const config = {
+          params: {
+            date_from: this.dateFrom,
+            date_to: this.dateTo,
+            sort_field: this.sortField,
+            sort_order: this.sortOrder
+          },
+          headers: {
+            Authorization: `Token ${this.$store.state.token}`
+          }
+        };
+        axios
+          .get(url, config)
+          .then((res) => {
+            this.data = res.data.resp;
+            this.loading = false;
+          })
+          .catch(() => {
+            this.$router.push('/login');
+          });
       }
     }
   };

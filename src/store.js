@@ -7,15 +7,7 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    token: localStorage.getItem('user-token') || '',
-    nds: [
-      'Без НДС',
-      'Основная ставка 0%',
-      'Основная ставка 10%',
-      'Расчётная ставка 10%',
-      'Основная ставка 18%',
-      'Расчётная ставка 18%'
-    ]
+    token: localStorage.getItem('user-token') || ''
   },
   mutations: {
     auth(state, token) {
@@ -27,4 +19,13 @@ export default new Vuex.Store({
       localStorage.removeItem('user-token');
     }
   },
+  getters: {
+    config: state => {
+      return {
+        headers: {
+          Authorization: `Token ${state.token}`
+        }
+      }
+    }
+  }
 });
