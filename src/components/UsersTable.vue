@@ -97,6 +97,8 @@
         data: [],
         dateFrom: null,
         dateTo: null,
+        dateFromString: null,
+        dateToString: null,
         loading: true,
         sortField: null,
         sortOrder: null,
@@ -154,12 +156,16 @@
     methods: {
       applyFilters() {
         this.page = 0;
+        this.dateFromString = this.dateFrom ? this.dateFrom.toLocaleDateString() : null;
+        this.dateToString = this.dateTo ? this.dateTo.toLocaleDateString() : null;
         this.getData();
       },
       resetFilters() {
         this.page = 0;
         this.dateFrom = null;
         this.dateTo = null;
+        this.dateFromString = null;
+        this.dateToString = null;
         this.sortField = null;
         this.sortOrder = null;
         this.phoneStr = null;
@@ -180,8 +186,8 @@
         const url = `${process.env.VUE_APP_API}admUsers/`;
         const config = {
           params: {
-            date_from: this.dateFrom,
-            date_to: this.dateTo,
+            date_from: this.dateFromString,
+            date_to: this.dateToString,
             sort_field: this.sortField,
             sort_order: this.sortOrder,
             page: this.page,
