@@ -55,6 +55,17 @@
         Всего пользователей: <strong>{{ cnt }}</strong>
       </p>
     </div>
+    <div class="columns is-multiline">
+      <div
+        v-for="(item, index) in coinsByObject"
+        :key="index + 'coins-by-object'"
+        class="column is-3"
+      >
+        <card
+          :object="item"
+        />
+      </div>
+    </div>
     <b-table
       :data="body"
       :columns="head"
@@ -81,11 +92,14 @@
 
 <script>
   import axios from 'axios';
+  import Card from './Card';
 
   export default {
     name: 'UsedQrTable',
+    components: { Card },
     data() {
       return {
+        coinsByObject: [],
         data: [],
         dateFrom: null,
         dateTo: null,
@@ -199,6 +213,7 @@
               this.data = res.data.resp;
             }
             this.cnt = res.data.cnt;
+            this.coinsByObject = res.data.coins_by_object;
             this.loading = false;
           })
           .catch(() => {
