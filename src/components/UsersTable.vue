@@ -37,6 +37,20 @@
         </b-button>
       </div>
     </b-field>
+    <div class="columns justify-between">
+      <p class="column total-users">
+        Всего пользователей: <strong>{{ cnt }}</strong>
+      </p>
+      <div class="column">
+        <b-button
+          type="is-info"
+          outlined
+          @click="isModalActive = true"
+        >
+          Начислить бесплатные жетоны
+        </b-button>
+      </div>
+    </div>
     <b-table
       :data="body"
       :columns="head"
@@ -61,14 +75,23 @@
     >
       Показать ещё
     </b-button>
+    <b-modal
+      :active.sync="isModalActive"
+      :width="640"
+      scroll="keep"
+    >
+      <create-free-qr/>
+    </b-modal>
   </section>
 </template>
 
 <script>
   import axios from 'axios';
+  import CreateFreeQr from './CreateFreeQr';
 
   export default {
     name: 'UsersTable',
+    components: { CreateFreeQr },
     data() {
       return {
         data: [],
@@ -78,7 +101,9 @@
         sortField: null,
         sortOrder: null,
         phoneStr: null,
+        isModalActive: false,
         page: 0,
+        cnt: 0,
         head: [
           {
             field: 'phone',
@@ -114,6 +139,13 @@
         }
 
         return body;
+      }
+    },
+    watch: {
+      isModalActive() {
+        if (!this.isModalActive) {
+          this.getData();
+        }
       }
     },
     mounted() {
@@ -167,6 +199,7 @@
             } else {
               this.data = res.data.resp;
             }
+            this.cnt = res.data.cnt;
             this.loading = false;
           })
           .catch(() => {
@@ -184,5 +217,10 @@
 
   .see-more {
     margin-top: 20px;
+  }
+
+  .total-users {
+    font-size: 18px;
+    margin-bottom: 20px;
   }
 </style>
