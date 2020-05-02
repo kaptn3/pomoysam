@@ -2,13 +2,13 @@
   <div class="card">
     <header class="card-header">
       <p class="card-header-title">
-        {{ object.car_wash__car_wash_addr }}
+        {{ title }}
       </p>
     </header>
     <div class="card__content">
       <p>Всего жетонов, 4 мин: {{ object.coins4m }}</p>
       <p>Всего жетонов, 2 мин: {{ object.coins2m }}</p>
-      <p>Общая сумма: {{ object.total_summ }}</p>
+      <p>Общая сумма: {{ object.total_summ }} р.</p>
     </div>
   </div>
 </template>
@@ -20,8 +20,12 @@
       object: {
         type: Object,
         required: true
+      },
+      title: {
+        type: String,
+        required: true
       }
-    },
+    }
   };
 </script>
 

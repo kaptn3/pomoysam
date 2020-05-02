@@ -63,6 +63,7 @@
       >
         <card
           :object="item"
+          :title="item.car_wash__car_wash_addr"
         />
       </div>
     </div>

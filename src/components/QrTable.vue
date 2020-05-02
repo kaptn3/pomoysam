@@ -69,12 +69,13 @@
     </div>
     <div class="columns is-multiline">
       <div
-        v-for="(item, index) in coinsByObject"
-        :key="index + 'coins-by-object'"
+        v-for="(item, index) in cards"
+        :key="index + 'cards-by-object'"
         class="column is-3"
       >
         <card
-          :object="item"
+          :object="item.object"
+          :title="item.title"
         />
       </div>
     </div>
@@ -121,7 +122,6 @@
     data() {
       return {
         active: null,
-        coinsByObject: [],
         data: [],
         dateFrom: null,
         dateTo: null,
@@ -135,6 +135,7 @@
         promoId: null,
         isModalActive: false,
         qrCode: '',
+        cards: [],
         head: [
           {
             field: 'pay_date',
@@ -251,7 +252,24 @@
               this.data = this.data.concat(res.data.resp);
             } else {
               this.data = res.data.resp;
+              this.cards.push({
+                title: 'Количество жетонов, купленное за баллы',
+                object: res.data.cash_back_coins
+              });
+              this.cards.push({
+                title: 'Количество жетонов, купленное по скидочным промокодам',
+                object: res.data.total_discount_qrs
+              });
+              this.cards.push({
+                title: 'Начисленные жетоны',
+                object: res.data.total_free_coins
+              });
+              this.cards.push({
+                title: 'Общее количество жетонов',
+                object: res.data.total_coins
+              });
             }
+
             this.cnt = res.data.cnt;
             this.coinsByObject = res.data.coins_by_object;
             this.loading = false;
