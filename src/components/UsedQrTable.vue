@@ -4,17 +4,19 @@
       class="group"
       grouped
     >
-      <b-datepicker
+      <b-datetimepicker
         v-model="dateFrom"
         placeholder="Дата от"
         icon="calendar-today"
         editable
+        horizontal-time-picker
       />
-      <b-datepicker
+      <b-datetimepicker
         v-model="dateTo"
         placeholder="Дата до"
         icon="calendar-today"
         editable
+        horizontal-time-picker
       />
       <b-input
         v-model="phoneStr"
@@ -161,8 +163,8 @@
     methods: {
       applyFilters() {
         this.page = 0;
-        this.dateFromString = this.dateFrom ? this.dateFrom.toLocaleDateString() : null;
-        this.dateToString = this.dateTo ? this.dateTo.toLocaleDateString() : null;
+        this.dateFromString = this.dateFrom ? `${this.dateFrom.toLocaleDateString()},${this.dateFrom.toLocaleTimeString()}` : null;
+        this.dateToString = this.dateTo ? `${this.dateTo.toLocaleDateString()},${this.dateTo.toLocaleTimeString()}` : null;
         this.getData();
       },
       resetFilters() {
