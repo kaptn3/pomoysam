@@ -172,8 +172,8 @@
         const body = this.data;
 
         for (let i = 0; i < this.data.length; i++) {
-          body[i].free_qr = this.data[i].free_qr ? '✔' : '-';
-          body[i].active = this.data[i].active ? '✔' : '-';
+          body[i].free_qr = this.data[i].free_qr === true ? '✔' : '-';
+          body[i].active = this.data[i].active === true ? '✔' : '-';
         }
 
         return body;
