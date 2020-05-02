@@ -79,7 +79,7 @@
       </div>
     </div>
     <b-table
-      :data="data"
+      :data="body"
       :columns="head"
       :loading="loading"
       :hoverable="true"
@@ -161,11 +161,8 @@
         const body = this.data;
 
         for (let i = 0; i < this.data.length; i++) {
-          const coinsCnt = this.data[i].coins_cnt;
-          if (coinsCnt === null) {
-            body[i].coins_cnt = 0;
-          }
-          body[i].total_cnt = body[i].coins_cnt;
+          body[i].free_qr = this.data[i].free_qr ? '✔' : '-';
+          body[i].active = this.data[i].active ? '✔' : '-';
         }
 
         return body;
