@@ -2,11 +2,10 @@
   <div class="card">
     <header class="card-header">
       <p class="card-header-title">
-        Объект
+        {{ object.car_wash__car_wash_addr }}
       </p>
     </header>
     <div class="card__content">
-      <p>Объект: {{ object.car_wash__car_wash_addr }}</p>
       <p>Всего жетонов, 4 мин: {{ object.coins4m }}</p>
       <p>Всего жетонов, 2 мин: {{ object.coins2m }}</p>
       <p>Общая сумма: {{ object.total_summ }}</p>
