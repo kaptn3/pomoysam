@@ -3,6 +3,7 @@ import Router from 'vue-router';
 import Login from './views/Login.vue';
 import AdmUsers from './views/AdmUsers';
 import AdmUsedQr from './views/AdmUsedQr';
+import AdmQr from './views/AdmQr';
 
 Vue.use(Router);
 
@@ -31,6 +32,11 @@ export default new Router({
       path: '/adm-used-qr',
       name: 'AdmUsedQr',
       component: AdmUsedQr,
+    },
+    {
+      path: '/adm-qr',
+      name: 'AdmQr',
+      component: AdmQr
     },
     {
       path: '*',
