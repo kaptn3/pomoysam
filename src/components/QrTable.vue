@@ -84,6 +84,7 @@
       :loading="loading"
       :hoverable="true"
       :mobile-cards="true"
+      @click="getUsedQrInfo"
     >
       <template slot="empty">
         <section class="content has-text-grey has-text-centered">
@@ -99,19 +100,27 @@
     >
       Показать ещё
     </b-button>
+    <b-modal
+      :active.sync="isModalActive"
+      :width="640"
+      scroll="keep"
+    >
+      <adm-used-qr-info :qr-code="qrCode"/>
+    </b-modal>
   </section>
 </template>
 
 <script>
   import axios from 'axios';
   import Card from './Card';
+  import AdmUsedQrInfo from './AdmUsedQrInfo';
 
   export default {
     name: 'QrTable',
-    components: { Card },
+    components: { Card, AdmUsedQrInfo },
     data() {
       return {
-        active: '',
+        active: null,
         coinsByObject: [],
         data: [],
         dateFrom: null,
@@ -124,6 +133,8 @@
         page: 0,
         cnt: 0,
         promoId: null,
+        isModalActive: false,
+        qrCode: '',
         head: [
           {
             field: 'pay_date',
@@ -168,11 +179,24 @@
         return body;
       }
     },
+    watch: {
+      isModalActive() {
+        if (!this.isModalActive) {
+          this.qrCode = '';
+        }
+      }
+    },
     mounted() {
       this.getPromoList();
       this.getData();
     },
     methods: {
+      getUsedQrInfo(row) {
+        if (row.active === '-') {
+          this.qrCode = row.qr_code;
+          this.isModalActive = true;
+        }
+      },
       applyFilters() {
         this.page = 0;
         this.dateFromString = this.dateFrom ? this.dateFrom.toLocaleDateString() : null;
