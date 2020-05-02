@@ -88,24 +88,18 @@
 <script>
   import axios from 'axios';
   import CreateFreeQr from './CreateFreeQr';
+  import table from './mixins/table';
 
   export default {
     name: 'UsersTable',
     components: { CreateFreeQr },
+    mixins: [table],
     data() {
       return {
-        data: [],
-        dateFrom: null,
-        dateTo: null,
-        dateFromString: null,
-        dateToString: null,
-        loading: true,
         sortField: null,
         sortOrder: null,
         phoneStr: null,
         isModalActive: false,
-        page: 0,
-        cnt: 0,
         head: [
           {
             field: 'phone',
@@ -154,32 +148,14 @@
       this.getData();
     },
     methods: {
-      applyFilters() {
-        this.page = 0;
-        this.dateFromString = this.dateFrom ? this.dateFrom.toLocaleDateString() : null;
-        this.dateToString = this.dateTo ? this.dateTo.toLocaleDateString() : null;
-        this.getData();
-      },
       resetFilters() {
-        this.page = 0;
-        this.dateFrom = null;
-        this.dateTo = null;
-        this.dateFromString = null;
-        this.dateToString = null;
-        this.sortField = null;
-        this.sortOrder = null;
-        this.phoneStr = null;
-        this.getData();
+        this.resetArray(['sortField', 'sortOrder', 'phoneStr']);
       },
       onSort(field, order) {
         this.sortField = field;
         this.sortOrder = order;
         this.page = 0;
         this.getData();
-      },
-      seeMore() {
-        this.page += 1;
-        this.getData(true);
       },
       getData(more) {
         this.loading = true;

@@ -115,23 +115,17 @@
   import axios from 'axios';
   import Card from './Card';
   import AdmUsedQrInfo from './AdmUsedQrInfo';
+  import table from './mixins/table';
 
   export default {
     name: 'QrTable',
     components: { Card, AdmUsedQrInfo },
+    mixins: [table],
     data() {
       return {
         active: null,
-        data: [],
-        dateFrom: null,
-        dateTo: null,
-        dateFromString: null,
-        dateToString: null,
-        loading: true,
         phoneStr: null,
         promoList: [],
-        page: 0,
-        cnt: 0,
         promoId: null,
         isModalActive: false,
         qrCode: '',
@@ -198,26 +192,8 @@
           this.isModalActive = true;
         }
       },
-      applyFilters() {
-        this.page = 0;
-        this.dateFromString = this.dateFrom ? this.dateFrom.toLocaleDateString() : null;
-        this.dateToString = this.dateTo ? this.dateTo.toLocaleDateString() : null;
-        this.getData();
-      },
       resetFilters() {
-        this.page = 0;
-        this.dateFrom = null;
-        this.dateTo = null;
-        this.dateFromString = null;
-        this.dateToString = null;
-        this.phoneStr = null;
-        this.promoId = null;
-        this.active = null;
-        this.getData();
-      },
-      seeMore() {
-        this.page += 1;
-        this.getData(true);
+        this.resetArray(['phoneStr', 'promoId', 'active']);
       },
       getPromoList() {
         const url = `${process.env.VUE_APP_API}promoList/`;
@@ -252,22 +228,24 @@
               this.data = this.data.concat(res.data.resp);
             } else {
               this.data = res.data.resp;
-              this.cards.push({
-                title: 'Количество жетонов, купленное за баллы',
-                object: res.data.cash_back_coins
-              });
-              this.cards.push({
-                title: 'Количество жетонов, купленное по скидочным промокодам',
-                object: res.data.total_discount_qrs
-              });
-              this.cards.push({
-                title: 'Начисленные жетоны',
-                object: res.data.total_free_coins
-              });
-              this.cards.push({
-                title: 'Общее количество жетонов',
-                object: res.data.total_coins
-              });
+              if (this.cards.length === 0) {
+                this.cards.push({
+                  title: 'Количество жетонов, купленное за баллы',
+                  object: res.data.cash_back_coins
+                });
+                this.cards.push({
+                  title: 'Количество жетонов, купленное по скидочным промокодам',
+                  object: res.data.total_discount_qrs
+                });
+                this.cards.push({
+                  title: 'Начисленные жетоны',
+                  object: res.data.total_free_coins
+                });
+                this.cards.push({
+                  title: 'Общее количество жетонов',
+                  object: res.data.total_coins
+                });
+              }
             }
 
             this.cnt = res.data.cnt;
