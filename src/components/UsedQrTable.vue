@@ -52,7 +52,7 @@
     </b-field>
     <div class="columns justify-between">
       <p class="column total-users">
-        Всего пользователей: <strong>{{ cnt }}</strong>
+        Всего записей: <strong>{{ cnt }}</strong>
       </p>
     </div>
     <div class="columns is-multiline">
