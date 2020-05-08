@@ -4,6 +4,7 @@ import Login from './views/Login.vue';
 import AdmUsers from './views/AdmUsers';
 import AdmUsedQr from './views/AdmUsedQr';
 import AdmQr from './views/AdmQr';
+import AdmRazmenStatistic from './views/AdmRazmenStatistic';
 
 Vue.use(Router);
 
@@ -37,6 +38,11 @@ export default new Router({
       path: '/adm-qr',
       name: 'AdmQr',
       component: AdmQr
+    },
+    {
+      path: '/adm-razmen-statistic',
+      name: 'AdmRazmenStatistic',
+      component: AdmRazmenStatistic
     },
     {
       path: '*',

@@ -64,7 +64,7 @@
           },
           {
             name: 'Разменные аппараты',
-            link: '#'
+            link: '/adm-razmen-statistic'
           },
           {
             name: 'Выплаты',

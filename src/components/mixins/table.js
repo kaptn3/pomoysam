@@ -16,10 +16,15 @@ export default {
       this.page += 1;
       this.getData(true);
     },
-    applyFilters() {
+    applyFilters(time) {
       this.page = 0;
-      this.dateFromString = this.dateFrom ? this.dateFrom.toLocaleDateString() : null;
-      this.dateToString = this.dateTo ? this.dateTo.toLocaleDateString() : null;
+      if (time) {
+        this.dateFromString = this.dateFrom ? `${this.dateFrom.toLocaleDateString()},${(this.dateFrom.toLocaleTimeString()).slice(0, -3)}` : null;
+        this.dateToString = this.dateTo ? `${this.dateTo.toLocaleDateString()},${(this.dateTo.toLocaleTimeString()).slice(0, -3)}` : null;
+      } else {
+        this.dateFromString = this.dateFrom ? this.dateFrom.toLocaleDateString() : null;
+        this.dateToString = this.dateTo ? this.dateTo.toLocaleDateString() : null;
+      }
       this.getData();
     },
     resetArray(filters) {
