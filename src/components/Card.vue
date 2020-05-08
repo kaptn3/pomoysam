@@ -6,9 +6,15 @@
       </p>
     </header>
     <div class="card__content">
-      <p>Всего жетонов, 4 мин: {{ object.coins4m }}</p>
-      <p>Всего жетонов, 2 мин: {{ object.coins2m }}</p>
-      <p>Общая сумма: {{ object.total_summ }} р.</p>
+      <p v-if="object.coins4m">
+        Всего жетонов, 4 мин: {{ object.coins4m }}
+      </p>
+      <p v-if="object.coins2m">
+        Всего жетонов, 2 мин: {{ object.coins2m }}
+      </p>
+      <p v-if="object.total_summ">
+        Общая сумма: {{ object.total_summ }} р.
+      </p>
     </div>
   </div>
 </template>
