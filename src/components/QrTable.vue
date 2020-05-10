@@ -226,7 +226,6 @@
           .then((res) => {
             if (more) {
               this.data = this.data.concat(res.data.resp);
-              console.log(this.data);
             } else {
               this.data = res.data.resp;
               if (this.cards.length === 0) {
