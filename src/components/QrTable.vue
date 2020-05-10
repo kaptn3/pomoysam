@@ -167,8 +167,8 @@
         const body = this.data;
 
         for (let i = 0; i < this.data.length; i++) {
-          body[i].free_qr = this.data[i].free_qr === true ? '✔' : '-';
-          body[i].active = this.data[i].active === true ? '✔' : '-';
+          body[i].free_qr = (this.data[i].free_qr !== true && this.data[i].free_qr !== '✔') ? '-' : '✔';
+          body[i].active = (this.data[i].active !== true && this.data[i].active !== '✔') ? '-' : '✔';
         }
 
         return body;
@@ -226,6 +226,7 @@
           .then((res) => {
             if (more) {
               this.data = this.data.concat(res.data.resp);
+              console.log(this.data);
             } else {
               this.data = res.data.resp;
               if (this.cards.length === 0) {
