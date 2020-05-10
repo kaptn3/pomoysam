@@ -24,7 +24,7 @@
       <div class="buttons">
         <b-button
           type="is-info"
-          @click="applyFilters"
+          @click="applyFilters(false)"
         >
           Применить
         </b-button>
