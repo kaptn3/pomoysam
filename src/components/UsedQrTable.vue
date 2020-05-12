@@ -95,17 +95,16 @@
   import axios from 'axios';
   import Card from './Card';
   import table from './mixins/table';
+  import getList from './mixins/getList';
 
   export default {
     name: 'UsedQrTable',
     components: { Card },
-    mixins: [table],
+    mixins: [table, getList],
     data() {
       return {
         coinsByObject: [],
         phoneStr: null,
-        carWashList: [],
-        objectId: null,
         head: [
           {
             field: 'object',
@@ -156,16 +155,6 @@
     methods: {
       resetFilters() {
         this.resetArray(['phoneStr', 'objectId']);
-      },
-      getCarWashList() {
-        const url = `${process.env.VUE_APP_API}razmenCarWashList/`;
-        axios.get(url)
-          .then((res) => {
-            this.carWashList = res.data;
-          })
-          .catch(() => {
-            this.$router.push('/login');
-          });
       },
       getData(more) {
         this.loading = true;
