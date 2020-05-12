@@ -128,16 +128,8 @@
             label: 'Объект'
           },
           {
-            field: 'date_time',
-            label: 'Дата'
-          },
-          {
             field: 'user_name',
             label: 'Имя пользователя'
-          },
-          {
-            field: 'user_phone',
-            label: 'Номер телефона пользователя'
           },
           {
             field: 'request_text',
@@ -146,6 +138,14 @@
           {
             field: 'reviewed',
             label: 'Обработано'
+          },
+          {
+            field: 'user_phone',
+            label: 'Номер телефона'
+          },
+          {
+            field: 'date_time',
+            label: 'Дата'
           },
           {
             field: 'actions',
