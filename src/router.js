@@ -5,6 +5,7 @@ import AdmUsers from './views/AdmUsers';
 import AdmUsedQr from './views/AdmUsedQr';
 import AdmQr from './views/AdmQr';
 import AdmRazmenStatistic from './views/AdmRazmenStatistic';
+import AdmCashOuts from './views/AdmCashOuts';
 
 Vue.use(Router);
 
@@ -43,6 +44,11 @@ export default new Router({
       path: '/adm-razmen-statistic',
       name: 'AdmRazmenStatistic',
       component: AdmRazmenStatistic
+    },
+    {
+      path: '/adm-cash-outs',
+      name: 'AdmCashOuts',
+      component: AdmCashOuts
     },
     {
       path: '*',
