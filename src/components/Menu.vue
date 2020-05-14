@@ -80,7 +80,7 @@
           },
           {
             name: 'FAQ',
-            link: '#'
+            link: '/faq'
           },
           {
             name: 'Новости',
