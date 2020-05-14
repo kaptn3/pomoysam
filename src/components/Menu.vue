@@ -76,7 +76,7 @@
           },
           {
             name: 'Промо-коды',
-            link: '#'
+            link: '/promocodes'
           },
           {
             name: 'FAQ',

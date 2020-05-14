@@ -8,6 +8,7 @@ import AdmRazmenStatistic from './views/AdmRazmenStatistic';
 import AdmCashOuts from './views/AdmCashOuts';
 import AdmUserRequest from './views/AdmUserRequest';
 import Faq from './views/Faq';
+import Promocodes from './views/Promocodes';
 
 Vue.use(Router);
 
@@ -56,6 +57,11 @@ export default new Router({
       path: '/adm-user-request',
       name: 'AdmUserRequest',
       component: AdmUserRequest
+    },
+    {
+      path: '/promocodes',
+      name: 'Promocodes',
+      component: Promocodes
     },
     {
       path: '/faq',
