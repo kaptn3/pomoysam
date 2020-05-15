@@ -228,23 +228,29 @@
               this.data = this.data.concat(res.data.resp);
             } else {
               this.data = res.data.resp;
-              if (this.cards.length === 0) {
-                this.cards.push({
+              const cards = [
+                {
                   title: 'Количество жетонов, купленное за баллы',
                   object: res.data.cash_back_coins
-                });
-                this.cards.push({
+                },
+                {
                   title: 'Количество жетонов, купленное по скидочным промокодам',
                   object: res.data.total_discount_qrs
-                });
-                this.cards.push({
+                },
+                {
                   title: 'Начисленные жетоны',
                   object: res.data.total_free_coins
-                });
-                this.cards.push({
+                },
+                {
                   title: 'Общее количество жетонов',
                   object: res.data.total_coins
-                });
+                }
+              ];
+              this.cards = [];
+              for (let i = 0; i < cards.length; i++) {
+                if (cards[i].object.total_summ) {
+                  this.cards.push(cards[i]);
+                }
               }
             }
 
