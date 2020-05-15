@@ -19,7 +19,7 @@
         />
         <b-select
           v-model="reviewed"
-          placeholder=""
+          placeholder="Статус"
           style="max-width: 222px;"
         >
           <option value=""/>
