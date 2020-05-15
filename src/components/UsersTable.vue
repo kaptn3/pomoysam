@@ -117,7 +117,8 @@
           },
           {
             field: 'balance',
-            label: 'Бонусный баланс'
+            label: 'Бонусный баланс',
+            sortable: true
           }
         ]
       };
