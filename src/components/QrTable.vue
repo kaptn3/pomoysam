@@ -172,6 +172,10 @@
           {
             field: 'active',
             label: 'Активность'
+          },
+          {
+            field: 'free_comment',
+            label: 'Комментарий'
           }
         ]
       };
@@ -183,6 +187,7 @@
         for (let i = 0; i < this.data.length; i++) {
           body[i].free_qr = (this.data[i].free_qr !== true && this.data[i].free_qr !== '✔') ? '-' : '✔';
           body[i].active = (this.data[i].active !== true && this.data[i].active !== '✔') ? '-' : '✔';
+          body[i].free_comment = body[i].free_comment || '-';
         }
 
         return body;
