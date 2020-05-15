@@ -92,8 +92,8 @@
       submitForm(e) {
         e.preventDefault();
         const data = new FormData();
-        data.set('answer', this.answerText);
-        data.set('question', this.questionText);
+        data.set('answer', this.answerText || this.answer);
+        data.set('question', this.questionText || this.question);
         if (this.row) {
           data.set('id', this.row.id);
         }
