@@ -157,11 +157,9 @@
     computed: {
       body() {
         const body = this.data;
-
         for (let i = 0; i < this.data.length; i++) {
           body[i].reviewed = (this.data[i].reviewed !== true && this.data[i].reviewed !== '✔') ? '-' : '✔';
         }
-
         return body;
       }
     },
@@ -204,11 +202,23 @@
         axios
           .get(url, config)
           .then((res) => {
+            // const body = [];
             if (more) {
               this.data = this.data.concat(res.data.resp);
             } else {
               this.data = res.data.resp;
             }
+            for (let i = 0; i < this.data.length; i++) {
+              this.data[i] = {
+                object: this.data[i].object,
+                user_name: this.data[i].user_name,
+                request_text: this.data[i].request_text,
+                reviewed: this.data[i].reviewed,
+                user_phone: this.data[i].user_phone,
+                date_time: this.data[i].date_time
+              };
+            }
+            // this.data = body;
             this.cnt = res.data.cnt;
             this.loading = false;
           })
