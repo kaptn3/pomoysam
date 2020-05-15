@@ -66,6 +66,15 @@
       <p class="column total-users">
         Всего записей: <strong>{{ cnt }}</strong>
       </p>
+      <div class="column">
+        <b-button
+          type="is-info"
+          outlined
+          @click="isModalActive = true"
+        >
+          Начислить бесплатные жетоны
+        </b-button>
+      </div>
     </div>
     <div class="columns is-multiline">
       <div
@@ -106,7 +115,11 @@
       :width="640"
       scroll="keep"
     >
-      <adm-used-qr-info :qr-code="qrCode"/>
+      <adm-used-qr-info
+        v-if="qrCode"
+        :qr-code="qrCode"
+      />
+      <create-free-qr v-if="!qrCode" />
     </b-modal>
   </section>
 </template>
@@ -115,11 +128,12 @@
   import axios from 'axios';
   import Card from './Card';
   import AdmUsedQrInfo from './AdmUsedQrInfo';
+  import CreateFreeQr from './CreateFreeQr';
   import table from './mixins/table';
 
   export default {
     name: 'QrTable',
-    components: { Card, AdmUsedQrInfo },
+    components: { Card, AdmUsedQrInfo, CreateFreeQr },
     mixins: [table],
     data() {
       return {
@@ -177,7 +191,9 @@
     watch: {
       isModalActive() {
         if (!this.isModalActive) {
-          this.qrCode = '';
+          if (this.qrCode) {
+            this.qrCode = '';
+          }
         }
       }
     },

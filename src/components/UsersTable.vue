@@ -41,15 +41,6 @@
       <p class="column total-users">
         Всего записей: <strong>{{ cnt }}</strong>
       </p>
-      <div class="column">
-        <b-button
-          type="is-info"
-          outlined
-          @click="isModalActive = true"
-        >
-          Начислить бесплатные жетоны
-        </b-button>
-      </div>
     </div>
     <b-table
       :data="body"
@@ -75,31 +66,21 @@
     >
       Показать ещё
     </b-button>
-    <b-modal
-      :active.sync="isModalActive"
-      :width="640"
-      scroll="keep"
-    >
-      <create-free-qr/>
-    </b-modal>
   </section>
 </template>
 
 <script>
   import axios from 'axios';
-  import CreateFreeQr from './CreateFreeQr';
   import table from './mixins/table';
 
   export default {
     name: 'UsersTable',
-    components: { CreateFreeQr },
     mixins: [table],
     data() {
       return {
         sortField: null,
         sortOrder: null,
         phoneStr: null,
-        isModalActive: false,
         head: [
           {
             field: 'phone',
@@ -136,13 +117,6 @@
         }
 
         return body;
-      }
-    },
-    watch: {
-      isModalActive() {
-        if (!this.isModalActive) {
-          this.getData();
-        }
       }
     },
     mounted() {
