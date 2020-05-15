@@ -19,19 +19,30 @@
       <h2 class="title is-3">
         {{ btnText }}
       </h2>
-      <b-field label="Вопрос">
-        <b-input
-          v-model="question"
-          required
-        />
+      <img
+        v-if="row"
+        :src="linkImage + row.image"
+      >
+      <b-field class="file">
+        <b-upload
+          v-model="image"
+          :required="!row"
+          accept="image/*"
+        >
+          <a class="button is-info">
+            <b-icon icon="upload" />
+            <span>Загрузить файл</span>
+          </a>
+        </b-upload>
+        <span
+          v-if="image"
+          class="file-name"
+        >
+          {{ image.name }}
+        </span>
       </b-field>
-      <b-field label="Ответ">
-        <b-input
-          v-model="answer"
-          maxlength="200"
-          type="textarea"
-          required
-        />
+      <b-field label="Сортировка">
+        <b-input v-model="sort" />
       </b-field>
       <button class="button is-info is-fullwidth">
         {{ btnText }}
@@ -44,7 +55,7 @@
   import axios from 'axios';
 
   export default {
-    name: 'AddFaq',
+    name: 'AddNews',
     props: {
       row: {
         type: Object,
@@ -54,53 +65,42 @@
     data() {
       return {
         status: '',
-        questionText: null,
-        answerText: null
+        sortText: null,
+        image: null
       };
     },
     computed: {
-      question: {
+      sort: {
         get() {
           if (this.row) {
-            return this.row.question;
+            return this.row.sort_field;
           }
           return '';
         },
         set(value) {
-          this.questionText = value;
+          this.sortText = value;
         }
       },
-      answer: {
-        get() {
-          if (this.row) {
-            return this.row.answer;
-          }
-          return '';
-        },
-        set(value) {
-          this.answerText = value;
-        }
+      linkImage() {
+        return process.env.VUE_APP_URL;
       },
       btnText() {
         return this.row ? 'Сохранить' : 'Добавить';
-      },
-      url() {
-        return `${process.env.VUE_APP_API}admFaq/`;
       }
     },
     methods: {
       submitForm(e) {
         e.preventDefault();
         const data = new FormData();
-        data.set('answer', this.answerText || this.answer);
-        data.set('question', this.questionText || this.question);
+        data.set('image', this.image);
+        data.set('sort_field', this.sortText || this.sort);
         if (this.row) {
           data.set('id', this.row.id);
         }
         const method = this.row ? 'put' : 'post';
         axios({
           method,
-          url: this.url,
+          url: `${process.env.VUE_APP_API}admNews/`,
           data,
           headers: {
             Authorization: `Token ${this.$store.state.token}`

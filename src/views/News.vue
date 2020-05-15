@@ -8,7 +8,6 @@
     </b-button>
     <b-table
       :data="data"
-      :columns="head"
       :loading="loading"
       :hoverable="true"
       :mobile-cards="true"
@@ -16,12 +15,19 @@
     >
       <template slot-scope="props">
         <b-table-column
-          v-for="(value, name) in props.row"
-          :key="name"
-          :style="name === 'id' ? 'display: none' : ''"
-          :field="name"
+          label="Картинка"
+          field="image"
         >
-          {{ value }}
+          <img
+            :src="linkImage + props.row.image"
+            class="image"
+          >
+        </b-table-column>
+        <b-table-column
+          label="Сортировка"
+          field="sort_field"
+        >
+          {{ props.row.sort_field }}
         </b-table-column>
         <b-table-column
           field="actions"
@@ -29,7 +35,7 @@
         >
           <b-button
             type="is-danger"
-            @click="deleteFaq(props.row.id)"
+            @click="deleteNew(props.row.id)"
           >
             Удалить
           </b-button>
@@ -46,35 +52,21 @@
       :width="640"
       scroll="keep"
     >
-      <add-faq :row="currentRow" />
+      <add-news :row="currentRow" />
     </b-modal>
   </section>
 </template>
 
 <script>
   import axios from 'axios';
-  import AddFaq from '../components/AddFaq';
+  import AddNews from '../components/AddNews';
 
   export default {
-    name: 'Faq',
-    components: { AddFaq },
+    name: 'News',
+    components: { AddNews },
     data() {
       return {
         data: [],
-        head: [
-          {
-            field: 'question',
-            label: 'Вопрос'
-          },
-          {
-            field: 'answer',
-            label: 'Ответ'
-          },
-          {
-            field: 'actions',
-            label: ' '
-          }
-        ],
         loading: true,
         isModalActive: false,
         currentRow: null,
@@ -83,7 +75,10 @@
     },
     computed: {
       url() {
-        return `${process.env.VUE_APP_API}admFaq/`;
+        return `${process.env.VUE_APP_API}admNews/`;
+      },
+      linkImage() {
+        return process.env.VUE_APP_URL;
       }
     },
     watch: {
@@ -109,7 +104,7 @@
             this.$router.push('/login');
           });
       },
-      deleteFaq(row) {
+      deleteNew(row) {
         this.isDelete = true;
         const data = new FormData();
         data.set('id', row);
@@ -136,3 +131,9 @@
     },
   };
 </script>
+
+<style scoped>
+.image {
+  max-width: 600px;
+}
+</style>
