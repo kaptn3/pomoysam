@@ -209,6 +209,7 @@
             }
             for (let i = 0; i < this.data.length; i++) {
               this.data[i] = {
+                id: this.data[i].id,
                 object: this.data[i].object,
                 user_name: this.data[i].user_name,
                 request_text: this.data[i].request_text,
