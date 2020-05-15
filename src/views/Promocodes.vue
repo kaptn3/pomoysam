@@ -1,11 +1,18 @@
 <template>
   <section class="container">
+    <b-button
+      type="is-info"
+      @click="isModalActive = true"
+    >
+      Добавить
+    </b-button>
     <b-table
       :data="body"
       :columns="head"
       :loading="loading"
       :hoverable="true"
       :mobile-cards="true"
+      @click="addPromocode"
     >
       <template slot="empty">
         <section class="content has-text-grey has-text-centered">
@@ -13,14 +20,23 @@
         </section>
       </template>
     </b-table>
+    <b-modal
+      :active.sync="isModalActive"
+      :width="640"
+      scroll="keep"
+    >
+      <add-promocode :row="currentRow" />
+    </b-modal>
   </section>
 </template>
 
 <script>
   import axios from 'axios';
+  import AddPromocode from '../components/AddPromocode';
 
   export default {
     name: 'Promocodes',
+    components: { AddPromocode },
     data() {
       return {
         loading: true,
@@ -50,7 +66,9 @@
             field: 'active',
             label: 'Активность'
           }
-        ]
+        ],
+        isModalActive: false,
+        currentRow: null
       };
     },
     computed: {
@@ -63,6 +81,14 @@
         }
 
         return body;
+      }
+    },
+    watch: {
+      isModalActive() {
+        if (!this.isModalActive) {
+          this.currentRow = null;
+          this.getPromo();
+        }
       }
     },
     mounted() {
@@ -79,6 +105,10 @@
           .catch(() => {
             this.$router.push('/login');
           });
+      },
+      addPromocode(row) {
+        this.currentRow = row;
+        this.isModalActive = true;
       }
     }
   };
