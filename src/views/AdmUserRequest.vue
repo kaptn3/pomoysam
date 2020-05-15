@@ -202,7 +202,6 @@
         axios
           .get(url, config)
           .then((res) => {
-            // const body = [];
             if (more) {
               this.data = this.data.concat(res.data.resp);
             } else {
@@ -218,7 +217,6 @@
                 date_time: this.data[i].date_time
               };
             }
-            // this.data = body;
             this.cnt = res.data.cnt;
             this.loading = false;
           })
