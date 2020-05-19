@@ -170,7 +170,7 @@
     },
     methods: {
       resetFilters() {
-        this.resetArray(['objectId']);
+        this.resetArray(['objectId', 'reviewed']);
       },
       markReviewed(row) {
         const body = new FormData();
