@@ -70,6 +70,7 @@
         :loading="loading"
         :hoverable="true"
         :mobile-cards="true"
+        :row-class="(row, index) => (index + 1) % 30 === 0 && 'is-info'"
       >
         <template slot-scope="props">
           <b-table-column
@@ -228,18 +229,3 @@
     }
   };
 </script>
-
-<style scoped>
-  .group {
-    align-items: flex-start;
-  }
-
-  .see-more {
-    margin-top: 20px;
-  }
-
-  .total-users {
-    font-size: 18px;
-    margin-bottom: 20px;
-  }
-</style>

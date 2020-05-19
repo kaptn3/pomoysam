@@ -36,6 +36,23 @@
     padding: 0 15px;
   }
 
+  .group {
+    align-items: flex-start;
+  }
+
+  .see-more {
+    margin-top: 20px;
+  }
+
+  .total-users {
+    font-size: 18px;
+    margin-bottom: 20px;
+  }
+
+  .is-info td {
+    border-bottom: 1px solid red !important;
+  }
+
   @import "~bulma";
   @import "~buefy/src/scss/buefy";
 </style>

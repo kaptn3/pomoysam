@@ -12,6 +12,7 @@
       :loading="loading"
       :hoverable="true"
       :mobile-cards="true"
+      :row-class="(row, index) => (index + 1) % 30 === 0 && 'is-info'"
       @click="addPromocode"
     >
       <template slot="empty">
