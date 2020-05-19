@@ -18,7 +18,7 @@
         </b-navbar-item>
       </b-navbar-dropdown>
       <b-navbar-item
-        to="https://google.com"
+        href="/control-panel/brokens/"
         tag="a"
         target="_blank"
       >
