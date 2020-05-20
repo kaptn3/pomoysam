@@ -49,8 +49,9 @@
       :sorting="true"
       :hoverable="true"
       :mobile-cards="true"
-      :row-class="(row, index) => (index + 1) % 30 === 0 && 'is-info'"
+      :row-class="(row, index) => (index + 1) % 30 === 0 && 'is-info' || 'tr'"
       backend-sorting
+      @click="cacheBack"
       @sort="onSort"
     >
       <template slot="empty">
@@ -67,21 +68,36 @@
     >
       Показать ещё
     </b-button>
+    <b-modal
+      :active.sync="isModalActive"
+      :width="640"
+      scroll="keep"
+    >
+      <cash-back-balance
+        :user-id="userId"
+        :old-balance="oldBalance"
+      />
+    </b-modal>
   </section>
 </template>
 
 <script>
   import axios from 'axios';
   import table from './mixins/table';
+  import CashBackBalance from './CashBackBalance';
 
   export default {
     name: 'UsersTable',
+    components: { CashBackBalance },
     mixins: [table],
     data() {
       return {
         sortField: null,
         sortOrder: null,
         phoneStr: null,
+        isModalActive: false,
+        userId: null,
+        oldBalance: null,
         head: [
           {
             field: 'phone',
@@ -118,6 +134,14 @@
         }
 
         return body;
+      }
+    },
+    watch: {
+      isModalActive() {
+        if (!this.isModalActive) {
+          this.userId = null;
+          this.oldBalance = null;
+        }
       }
     },
     mounted() {
@@ -163,7 +187,18 @@
           .catch(() => {
             this.$router.push('/login');
           });
+      },
+      cacheBack(row) {
+        this.isModalActive = true;
+        this.userId = row.user_id;
+        this.oldBalance = row.balance;
       }
     }
   };
 </script>
+
+<style>
+.tr {
+  cursor: pointer;
+}
+</style>
