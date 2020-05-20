@@ -10,6 +10,7 @@ import AdmUserRequest from './views/AdmUserRequest';
 import Faq from './views/Faq';
 import Promocodes from './views/Promocodes';
 import News from './views/News';
+import AdmUsedPromo from './views/AdmUsedPromo';
 
 Vue.use(Router);
 
@@ -68,6 +69,11 @@ export default new Router({
       path: '/faq',
       name: 'Faq',
       component: Faq
+    },
+    {
+      path: '/used-promo',
+      name: 'AdmUsedPromo',
+      component: AdmUsedPromo
     },
     {
       path: '/news',

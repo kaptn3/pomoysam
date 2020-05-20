@@ -79,6 +79,10 @@
             link: '/promocodes'
           },
           {
+            name: 'Использованные промокоды',
+            link: '/used-promo'
+          },
+          {
             name: 'FAQ',
             link: '/faq'
           },
