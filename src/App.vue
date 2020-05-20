@@ -38,6 +38,7 @@
 
   .group {
     align-items: flex-start;
+    flex-wrap: wrap;
   }
 
   .see-more {

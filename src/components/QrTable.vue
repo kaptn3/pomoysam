@@ -46,6 +46,18 @@
           Показать использованные QR-коды
         </option>
       </b-select>
+      <b-select
+        v-model="freeQr"
+        placeholder="Начисленный QR-код"
+        style="max-width: 222px;"
+      >
+        <option value="1">
+          Показать только начисленные
+        </option>
+        <option value="0">
+          Показать только неначисленные
+        </option>
+      </b-select>
       <div class="buttons">
         <b-button
           type="is-info"
@@ -144,6 +156,7 @@
         promoId: null,
         isModalActive: false,
         qrCode: '',
+        freeQr: null,
         cards: [],
         head: [
           {
@@ -215,7 +228,7 @@
         }
       },
       resetFilters() {
-        this.resetArray(['phoneStr', 'promoId', 'active']);
+        this.resetArray(['phoneStr', 'promoId', 'active', 'freeQr']);
       },
       getPromoList() {
         const url = `${process.env.VUE_APP_API}promoList/`;
@@ -237,7 +250,8 @@
             page: this.page,
             phone_str: this.phoneStr,
             promo_id: this.promoId,
-            active: this.active
+            active: this.active,
+            free_qr: this.freeQr
           },
           headers: {
             Authorization: `Token ${this.$store.state.token}`
