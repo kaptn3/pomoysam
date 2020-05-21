@@ -19,7 +19,7 @@
           field="image"
         >
           <img
-            :src="linkImage + props.row.image"
+            :src="props.row.image"
             class="image"
           >
         </b-table-column>
