@@ -79,10 +79,6 @@ export default new Router({
       path: '/news',
       name: 'News',
       component: News
-    },
-    {
-      path: '*',
-      redirect: '/login'
     }
   ],
 });
