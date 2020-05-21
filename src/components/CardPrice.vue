@@ -1,5 +1,8 @@
 <template>
-  <div class="card">
+  <div
+    class="card"
+    @click="$emit('click')"
+  >
     <header class="card-header">
       <p class="card-header-title">
         {{ title }}
@@ -7,7 +10,7 @@
     </header>
     <div class="card__content">
       <p>
-        Стоимость жетона: {{ price }}
+        Стоимость жетона: {{ object.price }}
       </p>
     </div>
   </div>
@@ -17,8 +20,8 @@
   export default {
     name: 'CardPrice',
     props: {
-      price: {
-        type: Number,
+      object: {
+        type: Object,
         required: true
       },
       title: {

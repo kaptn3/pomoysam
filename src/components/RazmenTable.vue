@@ -59,8 +59,9 @@
         class="column is-3"
       >
         <card-price
-          :price="item.price"
+          :object="item"
           :title="item.car_wash.car_wash_addr"
+          @click="changePrice(item.id, item.price)"
         />
       </div>
     </div>
@@ -98,6 +99,16 @@
     >
       Показать ещё
     </b-button>
+    <b-modal
+      :active.sync="isModalActive"
+      :width="640"
+      scroll="keep"
+    >
+      <change-price
+        :id="idPrice"
+        :old-price="oldPrice"
+      />
+    </b-modal>
   </section>
 </template>
 
@@ -105,17 +116,21 @@
   import axios from 'axios';
   import Card from './Card';
   import CardPrice from './CardPrice';
+  import ChangePrice from './ChangePrice';
   import table from './mixins/table';
   import getList from './mixins/getList';
 
   export default {
     name: 'RazmenTable',
-    components: { Card, CardPrice },
+    components: { Card, CardPrice, ChangePrice },
     mixins: [table, getList],
     data() {
       return {
         payByObject: [],
         prices: [],
+        isModalActive: false,
+        oldPrice: null,
+        idPrice: null,
         head: [
           {
             field: 'object',
@@ -151,6 +166,15 @@
         return body;
       }
     },
+    watch: {
+      isModalActive() {
+        if (!this.isModalActive) {
+          this.idPrice = null;
+          this.oldPrice = null;
+          this.getRazmenPrice();
+        }
+      }
+    },
     mounted() {
       this.getCarWashList();
       this.getRazmenPrice();
@@ -169,6 +193,12 @@
           .catch(() => {
             this.$router.push('/login');
           });
+      },
+      changePrice(id, price) {
+        console.log(id, price);
+        this.idPrice = id;
+        this.oldPrice = price;
+        this.isModalActive = true;
       },
       getData(more) {
         this.loading = true;
