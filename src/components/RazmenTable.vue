@@ -54,6 +54,18 @@
     </div>
     <div class="columns is-multiline">
       <div
+        v-for="(item, index) in prices"
+        :key="index + 'coins-by-object'"
+        class="column is-3"
+      >
+        <card-price
+          :price="item.price"
+          :title="item.car_wash.car_wash_addr"
+        />
+      </div>
+    </div>
+    <div class="columns is-multiline">
+      <div
         v-for="(item, index) in payByObject"
         :key="index + 'coins-by-object'"
         class="column is-3"
@@ -92,16 +104,18 @@
 <script>
   import axios from 'axios';
   import Card from './Card';
+  import CardPrice from './CardPrice';
   import table from './mixins/table';
   import getList from './mixins/getList';
 
   export default {
     name: 'RazmenTable',
-    components: { Card },
+    components: { Card, CardPrice },
     mixins: [table, getList],
     data() {
       return {
         payByObject: [],
+        prices: [],
         head: [
           {
             field: 'object',
@@ -139,11 +153,22 @@
     },
     mounted() {
       this.getCarWashList();
+      this.getRazmenPrice();
       this.getData();
     },
     methods: {
       resetFilters() {
         this.resetArray(['objectId']);
+      },
+      getRazmenPrice() {
+        const url = `${process.env.VUE_APP_API}admRazmenPrice/`;
+        axios.get(url, this.$store.getters.config)
+          .then((res) => {
+            this.prices = res.data;
+          })
+          .catch(() => {
+            this.$router.push('/login');
+          });
       },
       getData(more) {
         this.loading = true;
