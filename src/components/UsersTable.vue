@@ -141,6 +141,7 @@
         if (!this.isModalActive) {
           this.userId = null;
           this.oldBalance = null;
+          this.getData();
         }
       }
     },
