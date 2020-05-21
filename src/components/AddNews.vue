@@ -21,7 +21,7 @@
       </h2>
       <img
         v-if="row"
-        :src="linkImage + row.image"
+        :src="row.image"
       >
       <b-field class="file">
         <b-upload
