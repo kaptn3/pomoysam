@@ -81,7 +81,11 @@ export default new Router({
       component: News
     },
     {
-      path: '/media'
+      path: '/media/*',
+    },
+    {
+      path: '*',
+      redirect: '/login'
     }
   ],
 });
