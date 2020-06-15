@@ -51,9 +51,32 @@
       :mobile-cards="true"
       :row-class="(row, index) => (index + 1) % 30 === 0 && 'is-info' || 'tr'"
       backend-sorting
-      @click="cacheBack"
       @sort="onSort"
     >
+      <template slot-scope="props">
+        <b-table-column
+          v-for="(value, name) in props.row"
+          :key="name"
+          :style="name === 'id' ? 'display: none' : ''"
+          :field="name"
+        >
+          {{ value }}
+        </b-table-column>
+        <b-table-column
+          field="actions"
+          label=" "
+        >
+          <b-button
+            class="users-settings"
+            @click="cacheBack(props.row)"
+          >
+            <b-icon
+              icon="settings"
+              size="is-small"
+            />
+          </b-button>
+        </b-table-column>
+      </template>
       <template slot="empty">
         <section class="content has-text-grey has-text-centered">
           <p>Данные не найдены</p>
@@ -117,6 +140,10 @@
             field: 'balance',
             label: 'Бонусный баланс',
             sortable: true
+          },
+          {
+            field: 'actions',
+            label: ' '
           }
         ]
       };
@@ -124,6 +151,7 @@
     computed: {
       body() {
         const body = this.data;
+        const newBody = [];
 
         for (let i = 0; i < this.data.length; i++) {
           const coinsCnt = this.data[i].coins_cnt;
@@ -133,7 +161,16 @@
           body[i].total_cnt = body[i].coins_cnt;
         }
 
-        return body;
+        for (let k = 0; k < body.length; k++) {
+          newBody.push({
+            phone: body[k].phone,
+            register_date: body[k].register_date,
+            total_cnt: body[k].total_cnt,
+            balance: body[k].balance
+          });
+        }
+
+        return newBody;
       }
     },
     watch: {
@@ -199,7 +236,16 @@
 </script>
 
 <style>
-.tr {
-  cursor: pointer;
+.users-settings {
+  border: none;
+  padding: 0;
+  height: 100%;
+  width: 100%;
+  background: transparent;
+}
+
+.users-settings:hover,
+.users-settings:focus {
+  color: #b2302a;
 }
 </style>
