@@ -47,6 +47,18 @@
         </option>
       </b-select>
       <b-select
+        v-model="buyCoins"
+        placeholder="Жетоны, купленные за баллы"
+        style="max-width: 222px;"
+      >
+        <option value="0">
+          Показать только купленные за баллы
+        </option>
+        <option value="1">
+          Показать все, кроме купленных за баллы
+        </option>
+      </b-select>
+      <b-select
         v-model="freeQr"
         placeholder="Начисленный QR-код"
         style="max-width: 222px;"
@@ -158,6 +170,7 @@
         qrCode: '',
         freeQr: null,
         cards: [],
+        buyCoins: null,
         head: [
           {
             field: 'pay_date',
@@ -228,7 +241,7 @@
         }
       },
       resetFilters() {
-        this.resetArray(['phoneStr', 'promoId', 'active', 'freeQr']);
+        this.resetArray(['phoneStr', 'promoId', 'active', 'freeQr', 'buyCoins']);
       },
       getPromoList() {
         const url = `${process.env.VUE_APP_API}promoList/`;
@@ -251,7 +264,8 @@
             phone_str: this.phoneStr,
             promo_id: this.promoId,
             active: this.active,
-            free_qr: this.freeQr
+            free_qr: this.freeQr,
+            pay_from_cashback: this.buyCoins
           },
           headers: {
             Authorization: `Token ${this.$store.state.token}`
