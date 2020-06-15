@@ -11,6 +11,7 @@ import Faq from './views/Faq';
 import Promocodes from './views/Promocodes';
 import News from './views/News';
 import AdmUsedPromo from './views/AdmUsedPromo';
+import CashbackStory from './views/CashbackStory';
 
 Vue.use(Router);
 
@@ -79,6 +80,11 @@ export default new Router({
       path: '/news',
       name: 'News',
       component: News
+    },
+    {
+      path: '/cashback-story',
+      name: 'Cashback',
+      component: CashbackStory
     },
     {
       path: '/media/*',

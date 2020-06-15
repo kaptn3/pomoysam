@@ -55,6 +55,10 @@
             link: '/adm-users'
           },
           {
+            name: 'История начислений бонусных баллов',
+            link: 'cashback-story'
+          },
+          {
             name: 'QR-коды',
             link: '/adm-qr'
           },
