@@ -19,7 +19,7 @@
       <h2 class="title is-3">
         Установить стоимость жетона
       </h2>
-      <b-field label="Баланс">
+      <b-field label="Цена">
         <b-input
           v-model="price"
           required
