@@ -25,6 +25,14 @@
           required
         />
       </b-field>
+      <b-field label="Комментарий">
+        <b-input
+          v-model="comment"
+          type="textarea"
+          placeholder="Комментарий"
+          required
+        />
+      </b-field>
       <button class="button is-info is-fullwidth">
         Сохранить
       </button>
@@ -50,7 +58,8 @@
     data() {
       return {
         status: '',
-        newBalance: null
+        newBalance: null,
+        comment: null
       };
     },
     computed: {
@@ -69,6 +78,7 @@
         const data = new FormData();
         data.set('user_id', this.userId);
         data.set('new_balance', this.newBalance || this.balance);
+        data.set('comment', this.comment);
         const url = `${process.env.VUE_APP_API}admCashBackBalance/`;
         axios.post(url, data, this.$store.getters.config)
           .then(() => {

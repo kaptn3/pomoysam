@@ -57,16 +57,12 @@
         <b-table-column
           v-for="(value, name) in props.row"
           :key="name"
-          :style="name === 'id' ? 'display: none' : ''"
           :field="name"
+          :style="name === 'user_id' ? 'display: none' : null"
         >
           {{ value }}
-        </b-table-column>
-        <b-table-column
-          field="actions"
-          label=" "
-        >
           <b-button
+            v-if="name === 'balance'"
             class="users-settings"
             @click="cacheBack(props.row)"
           >
@@ -140,10 +136,6 @@
             field: 'balance',
             label: 'Бонусный баланс',
             sortable: true
-          },
-          {
-            field: 'actions',
-            label: ' '
           }
         ]
       };
@@ -166,7 +158,8 @@
             phone: body[k].phone,
             register_date: body[k].register_date,
             total_cnt: body[k].total_cnt,
-            balance: body[k].balance
+            balance: body[k].balance,
+            user_id: body[k].user_id
           });
         }
 
@@ -240,7 +233,7 @@
   border: none;
   padding: 0;
   height: 100%;
-  width: 100%;
+  display: inline-flex;
   background: transparent;
 }
 
