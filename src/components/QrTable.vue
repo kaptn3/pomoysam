@@ -51,10 +51,10 @@
         placeholder="Баллы"
         style="max-width: 222px;"
       >
-        <option value="0">
+        <option value="1">
           Показать только купленные за баллы
         </option>
-        <option value="1">
+        <option value="0">
           Показать все, кроме купленных за баллы
         </option>
       </b-select>
