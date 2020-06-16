@@ -58,7 +58,7 @@
       @click="isOpenCollapse = !isOpenCollapse"
     >
       Установка цен
-      <b-icon :icon="isOpenCollapse ? 'menu-up' : 'menu-down'"/>
+      <b-icon :icon="isOpenCollapse ? 'menu-down' : 'menu-right'"/>
     </h2>
     <b-collapse
       aria-id="contentIdForA11y2"
