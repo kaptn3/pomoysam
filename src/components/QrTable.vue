@@ -48,7 +48,7 @@
       </b-select>
       <b-select
         v-model="buyCoins"
-        placeholder="Жетоны, купленные за баллы"
+        placeholder="Баллы"
         style="max-width: 222px;"
       >
         <option value="0">
