@@ -86,20 +86,17 @@
         </b-button>
       </div>
     </b-field>
-    <div class="columns justify-between">
-      <p class="column total-users">
-        Всего записей: <strong>{{ cnt }}</strong>
-      </p>
-      <div class="column">
-        <b-button
-          type="is-info"
-          outlined
-          @click="isModalActive = true"
-        >
-          Начислить бесплатные жетоны
-        </b-button>
-      </div>
-    </div>
+    <p class="total-users">
+      Всего записей: <strong>{{ cnt }}</strong>
+    </p>
+    <b-button
+      class="set-coins-btn"
+      type="is-info"
+      outlined
+      @click="isModalActive = true"
+    >
+      Начислить бесплатные жетоны
+    </b-button>
     <div class="columns is-multiline">
       <div
         v-for="(item, index) in cards"
@@ -315,3 +312,9 @@
     }
   };
 </script>
+
+<style scoped>
+  .set-coins-btn {
+    margin-bottom: 20px;
+  }
+</style>
