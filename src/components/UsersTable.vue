@@ -59,6 +59,7 @@
           :key="name"
           :field="name"
           :style="name === 'user_id' ? 'display: none' : null"
+          :class="name === 'balance' ? 'column-with-icon' : null"
         >
           {{ value }}
           <b-button
@@ -240,5 +241,10 @@
 .users-settings:hover,
 .users-settings:focus {
   color: #b2302a;
+}
+
+.column-with-icon {
+  display: flex;
+  justify-content: space-between;
 }
 </style>

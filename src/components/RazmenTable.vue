@@ -82,6 +82,7 @@
           <b-table-column
             field="price"
             label="Текущая цена"
+            class="column-with-icon"
           >
             {{ props.row.price }}
             <b-button
@@ -274,5 +275,10 @@
 <style scoped>
 .set-prices {
  cursor: pointer;
+}
+
+.column-with-icon {
+  display: flex;
+  justify-content: space-between;
 }
 </style>
