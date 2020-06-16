@@ -52,19 +52,56 @@
         Всего записей: <strong>{{ cnt }}</strong>
       </p>
     </div>
-    <div class="columns is-multiline">
-      <div
-        v-for="(item, index) in prices"
-        :key="index + 'coins-by-object'"
-        class="column is-3"
+    <h2
+      class="title set-prices"
+      aria-controls="contentIdForA11y2"
+      @click="isOpenCollapse = !isOpenCollapse"
+    >
+      Установка цен
+      <b-icon :icon="isOpenCollapse ? 'menu-up' : 'menu-down'"/>
+    </h2>
+    <b-collapse
+      aria-id="contentIdForA11y2"
+      class="panel"
+      animation="slide"
+      :open.sync="isOpenCollapse"
+    >
+      <b-table
+        :data="prices"
+        :loading="loading"
+        :hoverable="true"
+        :mobile-cards="true"
       >
-        <card-price
-          :object="item"
-          :title="item.car_wash.car_wash_addr"
-          @click="changePrice(item.id, item.price)"
-        />
-      </div>
-    </div>
+        <template slot-scope="props">
+          <b-table-column
+            field="address"
+            label="Разменный аппарат"
+          >
+            {{ props.row.car_wash.car_wash_addr }}
+          </b-table-column>
+          <b-table-column
+            field="price"
+            label="Текущая цена"
+          >
+            {{ props.row.price }}
+            <b-button
+              class="users-settings"
+              @click="changePrice(props.row.id, props.row.price)"
+            >
+              <b-icon
+                icon="settings"
+                size="is-small"
+              />
+            </b-button>
+          </b-table-column>
+        </template>
+      </b-table>
+    </b-collapse>
+    <h2
+      class="title"
+    >
+      Общая статистика
+    </h2>
     <div class="columns is-multiline">
       <div
         v-for="(item, index) in payByObject"
@@ -115,14 +152,13 @@
 <script>
   import axios from 'axios';
   import Card from './Card';
-  import CardPrice from './CardPrice';
   import ChangePrice from './ChangePrice';
   import table from './mixins/table';
   import getList from './mixins/getList';
 
   export default {
     name: 'RazmenTable',
-    components: { Card, CardPrice, ChangePrice },
+    components: { Card, ChangePrice },
     mixins: [table, getList],
     data() {
       return {
@@ -131,6 +167,7 @@
         isModalActive: false,
         oldPrice: null,
         idPrice: null,
+        isOpenCollapse: false,
         head: [
           {
             field: 'object',
@@ -233,3 +270,9 @@
     }
   };
 </script>
+
+<style scoped>
+.set-prices {
+ cursor: pointer;
+}
+</style>
