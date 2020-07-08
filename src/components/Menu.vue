@@ -17,6 +17,16 @@
           {{ item.name }}
         </b-navbar-item>
       </b-navbar-dropdown>
+      <b-navbar-dropdown label="Оператор-техник">
+        <b-navbar-item
+          v-for="(item, index) in menuTech"
+          :key="'menu-item-operator-' + index"
+          :to="item.link"
+          tag="router-link"
+        >
+          {{ item.name }}
+        </b-navbar-item>
+      </b-navbar-dropdown>
     </template>
 
     <template
@@ -86,13 +96,15 @@
           {
             name: 'Новости',
             link: '/news'
-          },
+          }
+        ],
+        menuTech: [
           {
-            name: 'Оператор-техник: Показания счетчиков воды',
+            name: 'Показания счетчиков воды',
             link: '/water-counters'
           },
           {
-            name: 'Оператор-техник: Показания счетчков эл.энергии',
+            name: 'Показания счетчков эл.энергии',
             link: '/energy-counters'
           }
         ]
