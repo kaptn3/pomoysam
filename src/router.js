@@ -13,6 +13,7 @@ import News from './views/News';
 import AdmUsedPromo from './views/AdmUsedPromo';
 import CashbackStory from './views/CashbackStory';
 import AdmWaterCounters from './views/AdmWaterCounters';
+import AdmEnergyCounters from './views/AdmEnergyCounters';
 
 Vue.use(Router);
 
@@ -91,6 +92,11 @@ export default new Router({
       path: '/water-counters',
       name: 'WaterCounters',
       component: AdmWaterCounters
+    },
+    {
+      path: '/energy-counters',
+      name: 'EnergyCounters',
+      component: AdmEnergyCounters
     },
     {
       path: '/media/*',

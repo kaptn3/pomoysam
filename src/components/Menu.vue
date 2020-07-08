@@ -9,8 +9,8 @@
     >
       <b-navbar-dropdown label="Меню">
         <b-navbar-item
-          v-for="item in menu"
-          :key="'menu-' + item.name"
+          v-for="(item, index) in menu"
+          :key="'menu-item-' + index"
           :to="item.link"
           tag="router-link"
         >
@@ -90,6 +90,10 @@
           {
             name: 'Оператор-техник: Показания счетчиков воды',
             link: '/water-counters'
+          },
+          {
+            name: 'Оператор-техник: Показания счетчков эл.энергии',
+            link: '/energy-counters'
           }
         ]
       };
