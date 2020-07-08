@@ -22,7 +22,7 @@
       <b-field label="Номер телефона">
         <b-input
           v-model="phone"
-          placeholder="Номер телефона"
+          :placeholder="phonePlaceholder"
           required
         />
       </b-field>
@@ -36,14 +36,14 @@
       <b-field label="Жетонов на 2 минуты">
         <b-input
           v-model="coins2mCnt"
-          placeholder="Жетонов на 2 минуты"
+          :placeholder="min2Placeholder"
           required
         />
       </b-field>
       <b-field label="Жетонов на 4 минуты">
         <b-input
           v-model="coins4mCnt"
-          placeholder="Жетонов на 4 минуты"
+          :placeholder="min4Placeholder"
           required
         />
       </b-field>
@@ -76,6 +76,17 @@
         coins4mCnt: null,
         comment: null
       };
+    },
+    computed: {
+      phonePlaceholder() {
+        return process.env.VUE_APP_PHONE;
+      },
+      min2Placeholder() {
+        return process.env.VUE_APP_2M;
+      },
+      min4Placeholder() {
+        return process.env.VUE_APP_4M;
+      }
     },
     methods: {
       submitForm(e) {
