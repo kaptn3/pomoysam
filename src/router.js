@@ -12,6 +12,7 @@ import Promocodes from './views/Promocodes';
 import News from './views/News';
 import AdmUsedPromo from './views/AdmUsedPromo';
 import CashbackStory from './views/CashbackStory';
+import AdmWaterCounters from './views/AdmWaterCounters';
 
 Vue.use(Router);
 
@@ -85,6 +86,11 @@ export default new Router({
       path: '/cashback-story',
       name: 'Cashback',
       component: CashbackStory
+    },
+    {
+      path: '/water-counters',
+      name: 'WaterCounters',
+      component: AdmWaterCounters
     },
     {
       path: '/media/*',

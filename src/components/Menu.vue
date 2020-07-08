@@ -17,13 +17,6 @@
           {{ item.name }}
         </b-navbar-item>
       </b-navbar-dropdown>
-      <b-navbar-item
-        href="/control-panel/brokens/"
-        tag="a"
-        target="_blank"
-      >
-        Оператор - техник
-      </b-navbar-item>
     </template>
 
     <template
@@ -93,6 +86,10 @@
           {
             name: 'Новости',
             link: '/news'
+          },
+          {
+            name: 'Оператор-техник: Показания счетчиков воды',
+            link: '/water-counters'
           }
         ]
       };
