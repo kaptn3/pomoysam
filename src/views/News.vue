@@ -1,11 +1,16 @@
 <template>
   <section class="container">
-    <b-button
-      type="is-info"
-      @click="isModalActive = true"
-    >
-      Добавить
-    </b-button>
+    <div class="add-news">
+      <b-button
+        type="is-info add-news__btn"
+        @click="isModalActive = true"
+      >
+        Добавить
+      </b-button>
+      <p>
+        {{ newsText }}
+      </p>
+    </div>
     <b-table
       :data="data"
       :loading="loading"
@@ -79,6 +84,9 @@
       },
       linkImage() {
         return process.env.VUE_APP_URL;
+      },
+      newsText() {
+        return process.env.VUE_APP_NEWS;
       }
     },
     watch: {
@@ -135,5 +143,14 @@
 <style scoped>
 .image {
   max-width: 600px;
+}
+
+.add-news {
+  display: flex;
+  align-items: center;
+}
+
+.add-news__btn {
+  margin-right: 20px;
 }
 </style>
