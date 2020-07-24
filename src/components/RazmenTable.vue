@@ -115,6 +115,33 @@
       </b-table>
     </b-collapse>
     <h2
+      class="title set-prices"
+      aria-controls="contentIdForA11y3"
+      @click="isOpenCollapseCoins = !isOpenCollapseCoins"
+    >
+      Остатки жетонов
+      <b-icon :icon="isOpenCollapseCoins ? 'menu-down' : 'menu-right'"/>
+    </h2>
+    <b-collapse
+      aria-id="contentIdForA11y3"
+      class="panel"
+      animation="slide"
+      :open.sync="isOpenCollapseCoins"
+    >
+      <div class="columns is-multiline">
+        <div
+          v-for="(item, name) in coinsCnt"
+          :key="name + 'coins-cnt'"
+          class="column is-3"
+        >
+          <card-rest-coins
+            :list="item"
+            :title="name"
+          />
+        </div>
+      </div>
+    </b-collapse>
+    <h2
       class="title"
     >
       Общая статистика
@@ -172,10 +199,11 @@
   import ChangePrice from './ChangePrice';
   import table from './mixins/table';
   import getList from './mixins/getList';
+  import CardRestCoins from './CardRestCoins';
 
   export default {
     name: 'RazmenTable',
-    components: { Card, ChangePrice },
+    components: { CardRestCoins, Card, ChangePrice },
     mixins: [table, getList],
     data() {
       return {
@@ -185,7 +213,9 @@
         oldPrice: null,
         idPrice: null,
         isOpenCollapse: false,
+        isOpenCollapseCoins: false,
         payType: null,
+        coinsCnt: [],
         head: [
           {
             field: 'object',
@@ -251,6 +281,7 @@
     mounted() {
       this.getCarWashList();
       this.getRazmenPrice();
+      this.getCoinsCnt();
       this.getData();
     },
     methods: {
@@ -272,6 +303,14 @@
         this.idPrice = id;
         this.oldPrice = price;
         this.isModalActive = true;
+      },
+      getCoinsCnt() {
+        const url = `${process.env.VUE_APP_API}admCoinsCnt/`;
+        axios
+          .get(url, this.$store.getters.config)
+          .then((res) => {
+            this.coinsCnt = res.data;
+          });
       },
       getData(more) {
         this.loading = true;
