@@ -31,6 +31,22 @@
           {{ option.car_wash_addr }}
         </option>
       </b-select>
+      <b-select
+        v-model="payType"
+        placeholder="Тип оплаты"
+        style="max-width: 222px;"
+      >
+        <option
+          value="0"
+        >
+          Наличные
+        </option>
+        <option
+          value="1"
+        >
+          Безнал
+        </option>
+      </b-select>
       <div class="buttons">
         <b-button
           type="is-info"
@@ -169,6 +185,7 @@
         oldPrice: null,
         idPrice: null,
         isOpenCollapse: false,
+        payType: null,
         head: [
           {
             field: 'object',
@@ -181,6 +198,18 @@
           {
             field: 'summ',
             label: 'Сумма чека'
+          },
+          {
+            field: 'summ_by_cash',
+            label: 'Внесено купюрами'
+          },
+          {
+            field: 'summ_by_coins',
+            label: 'Внесено монетами'
+          },
+          {
+            field: 'pay_type',
+            label: 'Способ оплаты'
           },
           {
             field: 'coins_cnt',
@@ -199,6 +228,12 @@
             body[i].coins_cnt = 0;
           }
           body[i].total_cnt = body[i].coins_cnt;
+          const payType = this.data[i].pay_type;
+          if (payType === 1) {
+            body[i].pay_type = 'Безнал';
+          } else {
+            body[i].pay_type = 'Наличные';
+          }
         }
 
         return body;
@@ -220,7 +255,7 @@
     },
     methods: {
       resetFilters() {
-        this.resetArray(['objectId']);
+        this.resetArray(['objectId', 'payType']);
       },
       getRazmenPrice() {
         const url = `${process.env.VUE_APP_API}admRazmenPrice/`;
@@ -246,7 +281,8 @@
             date_from: this.dateFromString,
             date_to: this.dateToString,
             page: this.page,
-            object_id: this.objectId
+            object_id: this.objectId,
+            pay_type: this.payType
           },
           headers: {
             Authorization: `Token ${this.$store.state.token}`
