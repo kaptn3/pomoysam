@@ -1,0 +1,181 @@
+<template>
+  <div class="container">
+    <section>
+      <b-field
+        class="group"
+        grouped
+      >
+        <b-datetimepicker
+          v-model="dateFrom"
+          placeholder="Дата от"
+          icon="calendar-today"
+          editable
+          horizontal-time-picker
+        />
+        <b-datetimepicker
+          v-model="dateTo"
+          placeholder="Дата до"
+          icon="calendar-today"
+          editable
+          horizontal-time-picker
+        />
+        <b-select
+          v-model="objectId"
+          placeholder="Объект"
+          style="max-width: 222px;"
+        >
+          <option
+            v-for="option in carWashList"
+            :key="option.id"
+            :value="option.id"
+          >
+            {{ option.car_wash_addr }}
+          </option>
+        </b-select>
+        <div class="buttons">
+          <b-button
+            type="is-info"
+            @click="applyFilters(true)"
+          >
+            Применить
+          </b-button>
+          <b-button
+            type="is-info"
+            outlined
+            @click="resetFilters"
+          >
+            Сбросить
+          </b-button>
+        </div>
+      </b-field>
+      <div class="columns justify-between">
+        <p class="column total-users">
+          Всего записей: <strong>{{ cnt }}</strong>
+        </p>
+      </div>
+      <b-table
+        :data="data"
+        :columns="head"
+        :loading="loading"
+        :hoverable="true"
+        :mobile-cards="true"
+        :row-class="(row, index) => (index + 1) % 30 === 0 && 'is-info'"
+      >
+        <template slot="empty">
+          <section class="content has-text-grey has-text-centered">
+            <p>Данные не найдены</p>
+          </section>
+        </template>
+      </b-table>
+      <b-button
+        class="see-more is-fullwidth"
+        size="is-medium"
+        type="is-info"
+        @click="seeMore"
+      >
+        Показать ещё
+      </b-button>
+    </section>
+  </div>
+</template>
+
+<script>
+  import axios from 'axios';
+  import table from '../components/mixins/table';
+  import getList from '../components/mixins/getList';
+
+  export default {
+    name: 'AdmBrokenStat',
+    mixins: [table, getList],
+    data() {
+      return {
+        coinsByObject: [],
+        head: [
+          {
+            field: 'car_wash',
+            label: 'Мойка',
+            sticky: true
+          },
+          {
+            field: 'operator',
+            label: 'Оператор',
+            sticky: true
+          },
+          {
+            field: 'broken',
+            label: 'Неисправность'
+          },
+          {
+            field: 'description',
+            label: 'Комментарий оператора/Текст задачи'
+          },
+          {
+            field: 'post_num',
+            label: 'Номер поста'
+          },
+          {
+            field: 'fix_method',
+            label: 'Способ устранения'
+          },
+          {
+            field: 'fix_comment',
+            label: 'Комментарий техника'
+          },
+          {
+            field: 'teh',
+            label: 'Техник, которому назначена неисправность'
+          },
+          {
+            field: 'teh_received',
+            label: 'Техник, принявший неисправность в работу'
+          },
+          {
+            field: 'teh_changed',
+            label: 'Техник, изменивший статус неисправности'
+          },
+          {
+            field: 'corrected_by_admin',
+            label: 'Закрыто администратором'
+          }
+        ]
+      };
+    },
+    mounted() {
+      this.getData();
+    },
+    methods: {
+      resetFilters() {
+        this.resetArray(['objectId']);
+      },
+      getData(more) {
+        this.loading = true;
+        const url = `${process.env.VUE_APP_API}admBrokenStat/`;
+        const config = {
+          params: {
+            date_from: this.dateFromString,
+            date_to: this.dateToString,
+            page: this.page,
+            object_id: this.objectId
+          },
+          headers: {
+            Authorization: `Token ${this.$store.state.token}`
+          }
+        };
+        axios
+          .get(url, config)
+          .then((res) => {
+            if (more) {
+              this.data = this.data.concat(res.data.resp);
+            } else {
+              this.data = res.data.resp;
+            }
+            this.cnt = res.data.cnt;
+            this.loading = false;
+          })
+          .catch(() => {
+            this.$router.push('/login');
+          });
+      }
+    }
+  };
+</script>

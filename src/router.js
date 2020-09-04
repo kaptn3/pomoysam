@@ -14,6 +14,7 @@ import AdmUsedPromo from './views/AdmUsedPromo';
 import CashbackStory from './views/CashbackStory';
 import AdmWaterCounters from './views/AdmWaterCounters';
 import AdmEnergyCounters from './views/AdmEnergyCounters';
+import AdmBrokenStat from './views/AdmBrokenStat';
 
 Vue.use(Router);
 
@@ -97,6 +98,11 @@ export default new Router({
       path: '/energy-counters',
       name: 'EnergyCounters',
       component: AdmEnergyCounters
+    },
+    {
+      path: '/broken-stat',
+      name: 'AdmBrokenStat',
+      component: AdmBrokenStat
     },
     {
       path: '/media/*',
