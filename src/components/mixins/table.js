@@ -27,6 +27,9 @@ export default {
       }
       this.getData();
     },
+    convertTime(time) {
+      return time ? `${time.toLocaleDateString()},${(time.toLocaleTimeString()).slice(0, -3)}` : null;
+    },
     resetArray(filters) {
       let arr1 = [
         'page',

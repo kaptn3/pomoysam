@@ -82,6 +82,10 @@
             link: '/adm-user-request'
           },
           {
+            name: 'Статистика по неисправностям',
+            link: '/broken-stat'
+          },
+          {
             name: 'Промо-коды',
             link: '/promocodes'
           },

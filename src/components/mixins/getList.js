@@ -4,7 +4,8 @@ export default {
   data() {
     return {
       carWashList: [],
-      objectId: null
+      objectId: null,
+      techs: null
     };
   },
   methods: {
@@ -18,5 +19,15 @@ export default {
           this.$router.push('/login');
         });
     },
+    getTechs() {
+      const url = `${process.env.VUE_APP_API}getTehs/`;
+      axios.get(url)
+        .then((res) => {
+          this.techs = res.data;
+        })
+        .catch(() => {
+          this.$router.push('/login');
+        });
+    }
   }
 };

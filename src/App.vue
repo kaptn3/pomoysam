@@ -54,6 +54,10 @@
     border-bottom: 1px solid red !important;
   }
 
+  .input-field {
+    margin-bottom: 16px !important;
+  }
+
   @import "~bulma";
   @import "~buefy/src/scss/buefy";
 </style>

@@ -6,36 +6,90 @@
         grouped
       >
         <b-datetimepicker
-          v-model="dateFrom"
-          placeholder="Дата от"
+          v-model="receivedDateFrom"
+          placeholder="Дата от возникновения неисправности"
+          icon="calendar-today"
+          class="input-field"
+          editable
+          horizontal-time-picker
+        />
+        <b-datetimepicker
+          v-model="receivedDateTo"
+          placeholder="Дата до возникновения неисправности"
           icon="calendar-today"
           editable
           horizontal-time-picker
         />
         <b-datetimepicker
-          v-model="dateTo"
-          placeholder="Дата до"
+          v-model="correctedDateFrom"
+          placeholder="Дата от приема техником"
+          icon="calendar-today"
+          editable
+          horizontal-time-picker
+        />
+        <b-datetimepicker
+          v-model="correctedDateTo"
+          placeholder="Дата до приема техником"
           icon="calendar-today"
           editable
           horizontal-time-picker
         />
         <b-select
-          v-model="objectId"
-          placeholder="Объект"
+          v-model="brokenStatus"
+          placeholder="Статус неисправности"
           style="max-width: 222px;"
         >
           <option
-            v-for="option in carWashList"
-            :key="option.id"
-            :value="option.id"
+            v-for="item in statuses"
+            :key="item.value"
+            :value="item.value"
           >
-            {{ option.car_wash_addr }}
+            {{ item.label }}
+          </option>
+        </b-select>
+        <b-select
+          v-model="tehId"
+          placeholder="Техник, которому назначена неисправность"
+          style="max-width: 222px;"
+        >
+          <option
+            v-for="item in techs"
+            :key="item.id"
+            :value="item.id"
+          >
+            {{ item.name }}
+          </option>
+        </b-select>
+        <b-select
+          v-model="tehReceivedId"
+          placeholder="Техник, принявший неисправность в работу"
+          style="max-width: 222px;"
+        >
+          <option
+            v-for="item in techs"
+            :key="item.id"
+            :value="item.id"
+          >
+            {{ item.name }}
+          </option>
+        </b-select>
+        <b-select
+          v-model="tehChangedId"
+          placeholder="Техник, изменивший статус неисправности"
+          style="max-width: 222px;"
+        >
+          <option
+            v-for="item in techs"
+            :key="item.id"
+            :value="item.id"
+          >
+            {{ item.name }}
           </option>
         </b-select>
         <div class="buttons">
           <b-button
             type="is-info"
-            @click="applyFilters(true)"
+            @click="getData"
           >
             Применить
           </b-button>
@@ -89,7 +143,15 @@
     mixins: [table, getList],
     data() {
       return {
+        receivedDateFrom: null,
+        receivedDateTo: null,
+        correctedDateFrom: null,
+        correctedDateTo: null,
         coinsByObject: [],
+        brokenStatus: null,
+        tehId: null,
+        tehReceivedId: null,
+        tehChangedId: null,
         head: [
           {
             field: 'car_wash',
@@ -137,25 +199,62 @@
             field: 'corrected_by_admin',
             label: 'Закрыто администратором'
           }
+        ],
+        statuses: [
+          {
+            label: 'Устранена',
+            value: 'closed'
+          },
+          {
+            label: 'Не устранена',
+            value: 'opened'
+          },
+          {
+            label: 'Не может быть устранена',
+            value: 'broken_cant_fixed'
+          },
+          {
+            label: 'Отложена',
+            value: 'broken_postponed'
+          },
+          {
+            label: 'Закрыто администратором',
+            value: 'corrected_by_admin'
+          }
         ]
       };
     },
     mounted() {
       this.getData();
+      this.getTechs();
     },
     methods: {
       resetFilters() {
-        this.resetArray(['objectId']);
+        this.resetArray([
+          'brokenStatus',
+          'tehId',
+          'tehReceivedId',
+          'tehChangedId',
+          'receivedDateFrom',
+          'receivedDateTo',
+          'correctedDateFrom',
+          'correctedDateTo'
+        ]);
       },
       getData(more) {
         this.loading = true;
         const url = `${process.env.VUE_APP_API}admBrokenStat/`;
         const config = {
           params: {
-            date_from: this.dateFromString,
-            date_to: this.dateToString,
+            received_date_from: this.convertTime(this.receivedDateFrom),
+            received_date_to: this.convertTime(this.receivedDateTo),
+            corrected_date_from: this.convertTime(this.correctedDateFrom),
+            corrected_date_to: this.convertTime(this.correctedDateTo),
             page: this.page,
-            object_id: this.objectId
+            broken_status: this.brokenStatus,
+            teh_id: this.tehId,
+            teh_received_id: this.tehReceivedId,
+            teh_changed_id: this.tehChangedId
           },
           headers: {
             Authorization: `Token ${this.$store.state.token}`
