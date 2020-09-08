@@ -6,7 +6,7 @@
         grouped
       >
         <b-datetimepicker
-          v-model="receivedDateFrom"
+          v-model="createDateFrom"
           placeholder="Дата от возникновения неисправности"
           icon="calendar-today"
           class="input-field"
@@ -14,23 +14,42 @@
           horizontal-time-picker
         />
         <b-datetimepicker
-          v-model="receivedDateTo"
+          v-model="createDateTo"
           placeholder="Дата до возникновения неисправности"
           icon="calendar-today"
+          class="input-field"
+          editable
+          horizontal-time-picker
+        />
+        <b-datetimepicker
+          v-model="receivedDateFrom"
+          placeholder="Дата от приема техником"
+          icon="calendar-today"
+          class="input-field"
+          editable
+          horizontal-time-picker
+        />
+        <b-datetimepicker
+          v-model="receivedDateTo"
+          placeholder="Дата до приема техником"
+          icon="calendar-today"
+          class="input-field"
           editable
           horizontal-time-picker
         />
         <b-datetimepicker
           v-model="correctedDateFrom"
-          placeholder="Дата от приема техником"
+          placeholder="Дата от устранения неисправности"
           icon="calendar-today"
+          class="input-field"
           editable
           horizontal-time-picker
         />
         <b-datetimepicker
           v-model="correctedDateTo"
-          placeholder="Дата до приема техником"
+          placeholder="Дата до устранения неисправности"
           icon="calendar-today"
+          class="input-field"
           editable
           horizontal-time-picker
         />
@@ -89,7 +108,7 @@
         <div class="buttons">
           <b-button
             type="is-info"
-            @click="getData"
+            @click="getData(false)"
           >
             Применить
           </b-button>
@@ -108,7 +127,7 @@
         </p>
       </div>
       <b-table
-        :data="data"
+        :data="body"
         :columns="head"
         :loading="loading"
         :hoverable="true"
@@ -143,6 +162,8 @@
     mixins: [table, getList],
     data() {
       return {
+        createDateFrom: null,
+        createDateTo: null,
         receivedDateFrom: null,
         receivedDateTo: null,
         correctedDateFrom: null,
@@ -224,6 +245,23 @@
         ]
       };
     },
+    computed: {
+      body() {
+        const body = this.data;
+
+        for (let i = 0; i < this.data.length; i++) {
+          for (const key in body[i]) {
+            if (body[i][key] === false || body[i][key] === true) {
+              body[i][key] = (this.data[i][key] !== true && this.data[i][key] !== '✔') ? '-' : '✔';
+            } else if (body[i][key] === null) {
+              body[i][key] = '-';
+            }
+          }
+        }
+
+        return body;
+      }
+    },
     mounted() {
       this.getData();
       this.getTechs();
@@ -235,6 +273,8 @@
           'tehId',
           'tehReceivedId',
           'tehChangedId',
+          'createDateTo',
+          'createDateFrom',
           'receivedDateFrom',
           'receivedDateTo',
           'correctedDateFrom',
@@ -246,6 +286,8 @@
         const url = `${process.env.VUE_APP_API}admBrokenStat/`;
         const config = {
           params: {
+            create_date_from: this.convertTime(this.createDateFrom),
+            create_date_to: this.convertTime(this.createDateTo),
             received_date_from: this.convertTime(this.receivedDateFrom),
             received_date_to: this.convertTime(this.receivedDateTo),
             corrected_date_from: this.convertTime(this.correctedDateFrom),
