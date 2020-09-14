@@ -73,6 +73,10 @@
         const data = new FormData();
         data.set('car_wash_id', this.object);
         data.set('description', this.text);
+        data.set('post_num', '');
+        data.set('returned_coins', '');
+        data.set('broken_id', 44);
+
         axios.post(`${process.env.VUE_APP_API}sendBrokenRequest/`, data, this.$store.getters.config)
           .then(() => {
             this.status = 'ok';
