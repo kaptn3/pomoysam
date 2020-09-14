@@ -57,6 +57,7 @@
           v-model="brokenStatus"
           placeholder="Статус неисправности"
           style="max-width: 222px;"
+          class="input-field"
         >
           <option
             v-for="item in statuses"
@@ -70,6 +71,7 @@
           v-model="tehId"
           placeholder="Техник, которому назначена неисправность"
           style="max-width: 222px;"
+          class="input-field"
         >
           <option
             v-for="item in techs"
@@ -105,6 +107,19 @@
             {{ item.name }}
           </option>
         </b-select>
+        <b-select
+          v-model="object"
+          placeholder="Объект"
+          style="max-width: 222px;"
+        >
+          <option
+            v-for="item in carWashList"
+            :key="item.id"
+            :value="item.id"
+          >
+            {{ item.car_wash_addr }}
+          </option>
+        </b-select>
         <div class="buttons">
           <b-button
             type="is-info"
@@ -121,6 +136,12 @@
           </b-button>
         </div>
       </b-field>
+      <b-button
+        type="is-info"
+        @click="isModalActive = true"
+      >
+        Добавить задачу
+      </b-button>
       <div class="columns justify-between">
         <p class="column total-users">
           Всего записей: <strong>{{ cnt }}</strong>
@@ -133,7 +154,29 @@
         :hoverable="true"
         :mobile-cards="true"
         :row-class="(row, index) => (index + 1) % 30 === 0 && 'is-info'"
+        class="broken-stat__table"
       >
+        <template slot-scope="props">
+          <b-table-column
+            v-for="(value, name) in props.row"
+            :key="name"
+            :style="name === 'broken_stat_id' ? 'display: none' : ''"
+            :field="name"
+          >
+            {{ value }}
+          </b-table-column>
+          <b-table-column
+            field="actions"
+            label=" "
+          >
+            <b-button
+              type="is-danger"
+              @click="fixTask(props.row.broken_stat_id)"
+            >
+              Закрыть
+            </b-button>
+          </b-table-column>
+        </template>
         <template slot="empty">
           <section class="content has-text-grey has-text-centered">
             <p>Данные не найдены</p>
@@ -149,6 +192,13 @@
         Показать ещё
       </b-button>
     </section>
+    <b-modal
+      :active.sync="isModalActive"
+      :width="640"
+      scroll="keep"
+    >
+      <add-task />
+    </b-modal>
   </div>
 </template>
 
@@ -156,12 +206,16 @@
   import axios from 'axios';
   import table from '../components/mixins/table';
   import getList from '../components/mixins/getList';
+  import AddTask from '../components/AddTask';
 
   export default {
     name: 'AdmBrokenStat',
+    components: { AddTask },
     mixins: [table, getList],
     data() {
       return {
+        isModalActive: false,
+        object: null,
         createDateFrom: null,
         createDateTo: null,
         receivedDateFrom: null,
@@ -176,13 +230,11 @@
         head: [
           {
             field: 'car_wash',
-            label: 'Мойка',
-            sticky: true
+            label: 'Мойка'
           },
           {
             field: 'operator',
-            label: 'Оператор',
-            sticky: true
+            label: 'Оператор'
           },
           {
             field: 'broken',
@@ -219,6 +271,10 @@
           {
             field: 'corrected_by_admin',
             label: 'Закрыто администратором'
+          },
+          {
+            field: 'actions',
+            label: ' '
           }
         ],
         statuses: [
@@ -248,6 +304,7 @@
     computed: {
       body() {
         const body = this.data;
+        const bodySort = [];
 
         for (let i = 0; i < this.data.length; i++) {
           for (const key in body[i]) {
@@ -257,19 +314,34 @@
               body[i][key] = '-';
             }
           }
+          const fields = {};
+          for (let j = 0; j < this.head.length; j++) {
+            fields[this.head[j].field] = body[i][this.head[j].field];
+          }
+          fields.broken_stat_id = body[i].broken_stat_id;
+          bodySort.push(fields);
         }
 
-        return body;
+        return bodySort;
+      }
+    },
+    watch: {
+      isModalActive() {
+        if (!this.isModalActive) {
+          this.getData();
+        }
       }
     },
     mounted() {
       this.getData();
       this.getTechs();
+      this.getCarWashList();
     },
     methods: {
       resetFilters() {
         this.resetArray([
           'brokenStatus',
+          'object',
           'tehId',
           'tehReceivedId',
           'tehChangedId',
@@ -280,6 +352,14 @@
           'correctedDateFrom',
           'correctedDateTo'
         ]);
+      },
+      fixTask(id) {
+        const data = new FormData();
+        data.set('broken_id', id);
+        axios.post(`${process.env.VUE_APP_API}fixBrokenByAdmin/`, data, this.$store.getters.config)
+          .then(() => {
+            this.getData();
+          });
       },
       getData(more) {
         this.loading = true;
@@ -296,7 +376,8 @@
             broken_status: this.brokenStatus,
             teh_id: this.tehId,
             teh_received_id: this.tehReceivedId,
-            teh_changed_id: this.tehChangedId
+            teh_changed_id: this.tehChangedId,
+            object_id: this.object
           },
           headers: {
             Authorization: `Token ${this.$store.state.token}`
@@ -320,3 +401,9 @@
     }
   };
 </script>
+
+<style lang="scss" scoped>
+  .broken-stat__table {
+    overflow-x: scroll;
+  }
+</style>
