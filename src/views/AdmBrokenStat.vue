@@ -155,6 +155,8 @@
         :mobile-cards="true"
         :row-class="(row, index) => (index + 1) % 30 === 0 && 'is-info'"
         class="broken-stat__table"
+        sticky-header
+        height="3100px"
       >
         <template slot-scope="props">
           <b-table-column
@@ -162,6 +164,7 @@
             :key="name"
             :style="name === 'broken_stat_id' ? 'display: none' : ''"
             :field="name"
+            :sticky="name === 'car_wash'"
           >
             {{ value }}
           </b-table-column>
@@ -230,7 +233,8 @@
         head: [
           {
             field: 'car_wash',
-            label: 'Мойка'
+            label: 'Мойка',
+            sticky: true
           },
           {
             field: 'operator',
