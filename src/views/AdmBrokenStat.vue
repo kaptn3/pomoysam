@@ -354,9 +354,6 @@
       this.getData();
       this.getTechs();
       this.getCarWashList();
-      const stickyEl = document.querySelector('.has-sticky-header');
-      const tableEl = stickyEl.querySelector('table');
-      console.log(tableEl.clientWidth, stickyEl);
     },
     methods: {
       scrollTable(isLeft) {
