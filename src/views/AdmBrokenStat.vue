@@ -147,6 +147,19 @@
           Всего записей: <strong>{{ cnt }}</strong>
         </p>
       </div>
+      <div>
+        <b-button
+          :disabled="disabledArrow === 'left'"
+          style="margin-right: 20px;"
+          icon-right="arrow-left-thick"
+          @click="scrollTable(true)"
+        />
+        <b-button
+          :disabled="disabledArrow === 'right'"
+          icon-right="arrow-right-thick"
+          @click="scrollTable(false)"
+        />
+      </div>
       <b-table
         :data="body"
         :columns="head"
@@ -217,6 +230,7 @@
     mixins: [table, getList],
     data() {
       return {
+        disabledArrow: 'left',
         isModalActive: false,
         object: null,
         createDateFrom: null,
@@ -340,8 +354,22 @@
       this.getData();
       this.getTechs();
       this.getCarWashList();
+      const stickyEl = document.querySelector('.has-sticky-header');
+      const tableEl = stickyEl.querySelector('table');
+      console.log(tableEl.clientWidth, stickyEl);
     },
     methods: {
+      scrollTable(isLeft) {
+        const stickyEl = document.querySelector('.has-sticky-header');
+        if (isLeft) {
+          stickyEl.scrollLeft = 0;
+          this.disabledArrow = 'left';
+        } else {
+          const tableEl = stickyEl.querySelector('table');
+          stickyEl.scrollLeft = tableEl.clientWidth - stickyEl.clientWidth;
+          this.disabledArrow = 'right';
+        }
+      },
       resetFilters() {
         this.resetArray([
           'brokenStatus',
@@ -405,9 +433,3 @@
     }
   };
 </script>
-
-<style lang="scss" scoped>
-  .broken-stat__table {
-    overflow-x: scroll;
-  }
-</style>
