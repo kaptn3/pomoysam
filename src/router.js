@@ -16,6 +16,7 @@ import AdmWaterCounters from './views/AdmWaterCounters';
 import AdmEnergyCounters from './views/AdmEnergyCounters';
 import AdmBrokenStat from './views/AdmBrokenStat';
 import AdmChem from './views/AdmChem';
+import AdmTechs from './views/AdmTechs';
 
 Vue.use(Router);
 
@@ -109,6 +110,11 @@ export default new Router({
       path: '/chem',
       name: 'AdmChem',
       component: AdmChem
+    },
+    {
+      path: '/techs',
+      name: 'AdmTechs',
+      component: AdmTechs
     },
     {
       path: '/media/*',

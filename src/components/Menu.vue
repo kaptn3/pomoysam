@@ -108,6 +108,10 @@
             link: '/chem'
           },
           {
+            name: 'Управление техниками',
+            link: '/techs'
+          },
+          {
             name: 'Показания счетчиков воды',
             link: '/water-counters'
           },
