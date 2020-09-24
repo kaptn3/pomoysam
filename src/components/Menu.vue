@@ -104,6 +104,10 @@
             link: '/broken-stat'
           },
           {
+            name: 'Учет химии',
+            link: '/chem'
+          },
+          {
             name: 'Показания счетчиков воды',
             link: '/water-counters'
           },
