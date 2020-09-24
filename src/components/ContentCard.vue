@@ -38,11 +38,10 @@
   }
 
   .card__content {
-    padding: 20px;
+    padding: 0.75rem;
   }
 
   .card__content:not(:last-child) {
     border-bottom: 1px solid #dbdbdb;
-    padding: 0.75rem;
   }
 </style>
