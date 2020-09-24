@@ -12,7 +12,7 @@
         />
       </div>
     </div>
-    <h2 class="title-4">
+    <h2 class="title">
       Закрепить объект за техником
     </h2>
     <b-select
