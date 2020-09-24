@@ -118,6 +118,27 @@
       :row-class="(row, index) => (index + 1) % 30 === 0 && 'is-info'"
       @click="getUsedQrInfo"
     >
+      <template slot-scope="props">
+        <b-table-column
+          v-for="(value, name) in props.row"
+          :key="name"
+          :style="name === 'id' ? 'display: none' : ''"
+          :field="name"
+        >
+          {{ value }}
+        </b-table-column>
+        <b-table-column
+          field="actions"
+          label=" "
+        >
+          <b-button
+            v-if="props.row.active === '✔'"
+            @click="markInactive(props.row.qr_code)"
+          >
+            Деактировать
+          </b-button>
+        </b-table-column>
+      </template>
       <template slot="empty">
         <section class="content has-text-grey has-text-centered">
           <p>Данные не найдены</p>
@@ -200,6 +221,10 @@
           {
             field: 'free_comment',
             label: 'Комментарий'
+          },
+          {
+            field: 'actions',
+            label: ' '
           }
         ]
       };
@@ -207,14 +232,21 @@
     computed: {
       body() {
         const body = this.data;
+        const bodySort = [];
 
         for (let i = 0; i < this.data.length; i++) {
           body[i].free_qr = (this.data[i].free_qr !== true && this.data[i].free_qr !== '✔') ? '-' : '✔';
           body[i].active = (this.data[i].active !== true && this.data[i].active !== '✔') ? '-' : '✔';
           body[i].free_comment = body[i].free_comment || '-';
+
+          const fields = {};
+          for (let j = 0; j < this.head.length; j++) {
+            fields[this.head[j].field] = body[i][this.head[j].field];
+          }
+          bodySort.push(fields);
         }
 
-        return body;
+        return bodySort;
       }
     },
     watch: {
@@ -231,6 +263,14 @@
       this.getData();
     },
     methods: {
+      markInactive(qr) {
+        const data = new FormData();
+        data.set('qrcodeid', qr);
+        axios.post(`${process.env.VUE_APP_API}markInactive/`, data, this.$store.getters.config)
+          .then(() => {
+            this.getData();
+          });
+      },
       getUsedQrInfo(row) {
         if (row.active === '-') {
           this.qrCode = row.qr_code;
