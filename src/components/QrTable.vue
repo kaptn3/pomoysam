@@ -122,7 +122,7 @@
         <b-table-column
           v-for="(value, name) in props.row"
           :key="name"
-          :style="name === 'id' ? 'display: none' : ''"
+          :style="name === 'qr_code_id' ? 'display: none' : ''"
           :field="name"
         >
           {{ value }}
@@ -133,7 +133,7 @@
         >
           <b-button
             v-if="props.row.active === '✔'"
-            @click="markInactive(props.row.qr_code)"
+            @click="markInactive(props.row.qr_code_id)"
           >
             Деактировать
           </b-button>
@@ -243,6 +243,7 @@
           for (let j = 0; j < this.head.length; j++) {
             fields[this.head[j].field] = body[i][this.head[j].field];
           }
+          fields.qr_code_id = body[i].qr_code_id;
           bodySort.push(fields);
         }
 
@@ -265,7 +266,7 @@
     methods: {
       markInactive(qr) {
         const data = new FormData();
-        data.set('qrcodeid', qr);
+        data.set('id', qr);
         axios.post(`${process.env.VUE_APP_API}markInactive/`, data, this.$store.getters.config)
           .then(() => {
             this.getData();
