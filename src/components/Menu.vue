@@ -7,10 +7,20 @@
       v-if="$store.state.token"
       slot="start"
     >
-      <b-navbar-dropdown label="Меню">
+      <b-navbar-dropdown label="Мобильное приложение">
         <b-navbar-item
           v-for="(item, index) in menu"
           :key="'menu-item-' + index"
+          :to="item.link"
+          tag="router-link"
+        >
+          {{ item.name }}
+        </b-navbar-item>
+      </b-navbar-dropdown>
+      <b-navbar-dropdown label="Разменные аппараты">
+        <b-navbar-item
+          v-for="(item, index) in menuRazmen"
+          :key="'menu-item-razmen-' + index"
           :to="item.link"
           tag="router-link"
         >
@@ -58,8 +68,8 @@
             link: '/adm-users'
           },
           {
-            name: 'История начислений бонусных баллов',
-            link: 'cashback-story'
+            name: 'Обращения пользователей',
+            link: '/adm-user-request'
           },
           {
             name: 'QR-коды',
@@ -70,16 +80,8 @@
             link: '/adm-used-qr'
           },
           {
-            name: 'Разменные аппараты',
-            link: '/adm-razmen-statistic'
-          },
-          {
-            name: 'Выплаты',
-            link: '/adm-cash-outs'
-          },
-          {
-            name: 'Обращения пользователей',
-            link: '/adm-user-request'
+            name: 'История начислений бонусных баллов',
+            link: 'cashback-story'
           },
           {
             name: 'Промо-коды',
@@ -96,6 +98,16 @@
           {
             name: 'Новости',
             link: '/news'
+          }
+        ],
+        menuRazmen: [
+          {
+            name: 'Статистика',
+            link: '/adm-razmen-statistic'
+          },
+          {
+            name: 'Выплаты',
+            link: '/adm-cash-outs'
           }
         ],
         menuTech: [
