@@ -153,14 +153,15 @@
         :loading="loading"
         :hoverable="true"
         :mobile-cards="true"
-        :row-class="(row, index) => (index + 1) % 30 === 0 && 'is-info'"
+        :row-class="(row, index) => (
+          ((index + 1) % 30 === 0) ? 'is-info ' : '')
+          + (row.show_warning === '✔' ? ' warning' : '')"
       >
         <template slot-scope="props">
           <b-table-column
             v-for="(value, name) in props.row"
             :key="name"
             :style="name === 'broken_stat_id' || name === 'show_warning' ? 'display: none' : ''"
-            :class="props.row.show_warning === true ? 'warning' : ''"
             :field="name"
           >
             {{ value }}
