@@ -147,19 +147,6 @@
           Всего записей: <strong>{{ cnt }}</strong>
         </p>
       </div>
-      <div>
-        <b-button
-          :disabled="disabledArrow === 'left'"
-          style="margin-right: 20px;"
-          icon-right="arrow-left-thick"
-          @click="scrollTable(true)"
-        />
-        <b-button
-          :disabled="disabledArrow === 'right'"
-          icon-right="arrow-right-thick"
-          @click="scrollTable(false)"
-        />
-      </div>
       <b-table
         :data="body"
         :columns="head"
@@ -167,9 +154,6 @@
         :hoverable="true"
         :mobile-cards="true"
         :row-class="(row, index) => (index + 1) % 30 === 0 && 'is-info'"
-        class="broken-stat__table"
-        sticky-header
-        height="3100px"
       >
         <template slot-scope="props">
           <b-table-column
@@ -177,7 +161,6 @@
             :key="name"
             :style="name === 'broken_stat_id' ? 'display: none' : ''"
             :field="name"
-            :sticky="name === 'car_wash'"
           >
             {{ value }}
           </b-table-column>
@@ -246,49 +229,29 @@
         tehChangedId: null,
         head: [
           {
-            field: 'car_wash',
-            label: 'Мойка',
+            field: 'first',
+            label: 'Время возникновения / Приема техником / Устранения неисправности',
             sticky: true
           },
           {
-            field: 'operator',
-            label: 'Оператор'
+            field: 'second',
+            label: 'Неисправность / № поста / Комментарий (задача)'
           },
           {
-            field: 'broken',
-            label: 'Неисправность'
+            field: 'third',
+            label: 'Мойка / ФИО оператора'
           },
           {
-            field: 'description',
-            label: 'Комментарий оператора/Текст задачи'
+            field: 'four',
+            label: 'Техник(кому назначена / принявший / изменивший статус) неисправности'
           },
           {
-            field: 'post_num',
-            label: 'Номер поста'
+            field: 'five',
+            label: 'Статус неисправности'
           },
           {
-            field: 'fix_method',
-            label: 'Способ устранения'
-          },
-          {
-            field: 'fix_comment',
-            label: 'Комментарий техника'
-          },
-          {
-            field: 'teh',
-            label: 'Техник, которому назначена неисправность'
-          },
-          {
-            field: 'teh_received',
-            label: 'Техник, принявший неисправность в работу'
-          },
-          {
-            field: 'teh_changed',
-            label: 'Техник, изменивший статус неисправности'
-          },
-          {
-            field: 'corrected_by_admin',
-            label: 'Закрыто администратором'
+            field: 'six',
+            label: 'Способ устранения / комментарий техника / закрыто администратором'
           },
           {
             field: 'actions',
@@ -321,26 +284,31 @@
     },
     computed: {
       body() {
-        const body = this.data;
-        const bodySort = [];
+        const body = [];
+        const linkToData = this.data;
 
         for (let i = 0; i < this.data.length; i++) {
-          for (const key in body[i]) {
-            if (body[i][key] === false || body[i][key] === true) {
-              body[i][key] = (this.data[i][key] !== true && this.data[i][key] !== '✔') ? '-' : '✔';
-            } else if (body[i][key] === null) {
-              body[i][key] = '-';
+          for (const key in linkToData[i]) {
+            if (linkToData[i][key] === false || linkToData[i][key] === true) {
+              linkToData[i][key] = (this.data[i][key] !== true && this.data[i][key] !== '✔') ? '-' : '✔';
+            } else if (linkToData[i][key] === null || linkToData[i][key] === '') {
+              linkToData[i][key] = '-';
             }
           }
-          const fields = {};
-          for (let j = 0; j < this.head.length; j++) {
-            fields[this.head[j].field] = body[i][this.head[j].field];
-          }
-          fields.broken_stat_id = body[i].broken_stat_id;
-          bodySort.push(fields);
-        }
 
-        return bodySort;
+          const fields = {};
+          const object = linkToData[i];
+
+          fields.first = `${object.create_time} / ${object.received_by_teh_time} / ${object.corrected_by_teh_time}`;
+          fields.second = `${object.broken} / ${object.post_num} / ${object.description}`;
+          fields.third = `${object.car_wash} / ${object.operator}`;
+          fields.four = `${object.teh} / ${object.teh_received} / ${object.teh_changed}`;
+          fields.five = object.broken_status;
+          fields.six = `${object.fix_method} / ${object.fix_comment} / ${object.corrected_by_admin}`;
+          fields.broken_stat_id = object.broken_stat_id;
+          body.push(fields);
+        }
+        return body;
       }
     },
     watch: {
@@ -356,17 +324,6 @@
       this.getCarWashList();
     },
     methods: {
-      scrollTable(isLeft) {
-        const stickyEl = document.querySelector('.has-sticky-header');
-        if (isLeft) {
-          stickyEl.scrollLeft = 0;
-          this.disabledArrow = 'left';
-        } else {
-          const tableEl = stickyEl.querySelector('table');
-          stickyEl.scrollLeft = tableEl.clientWidth - stickyEl.clientWidth;
-          this.disabledArrow = 'right';
-        }
-      },
       resetFilters() {
         this.resetArray([
           'brokenStatus',
