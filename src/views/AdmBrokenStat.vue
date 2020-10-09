@@ -159,7 +159,8 @@
           <b-table-column
             v-for="(value, name) in props.row"
             :key="name"
-            :style="name === 'broken_stat_id' ? 'display: none' : ''"
+            :style="name === 'broken_stat_id' || name === 'show_warning' ? 'display: none' : ''"
+            :class="props.row.show_warning === true ? 'warning' : ''"
             :field="name"
           >
             {{ value }}
@@ -306,6 +307,7 @@
           fields.five = object.broken_status;
           fields.six = `${object.fix_method} / ${object.fix_comment} / ${object.corrected_by_admin}`;
           fields.broken_stat_id = object.broken_stat_id;
+          fields.show_warning = object.show_warning;
           body.push(fields);
         }
         return body;
@@ -387,3 +389,9 @@
     }
   };
 </script>
+
+<style>
+  table .warning {
+    background-color: #f8d7da;
+  }
+</style>
