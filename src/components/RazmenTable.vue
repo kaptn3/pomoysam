@@ -47,6 +47,22 @@
           Безнал
         </option>
       </b-select>
+      <b-select
+        v-model="cashType"
+        placeholder="Монеты/Купюры"
+        style="max-width: 222px;"
+      >
+        <option
+          value="0"
+        >
+          Купюры
+        </option>
+        <option
+          value="1"
+        >
+          Монеты
+        </option>
+      </b-select>
       <div class="buttons">
         <b-button
           type="is-info"
@@ -216,6 +232,7 @@
         isOpenCollapseCoins: false,
         payType: null,
         coinsCnt: [],
+        cashType: null,
         head: [
           {
             field: 'object',
@@ -286,7 +303,7 @@
     },
     methods: {
       resetFilters() {
-        this.resetArray(['objectId', 'payType']);
+        this.resetArray(['objectId', 'payType', 'cashType']);
       },
       getRazmenPrice() {
         const url = `${process.env.VUE_APP_API}admRazmenPrice/`;
@@ -321,7 +338,8 @@
             date_to: this.dateToString,
             page: this.page,
             object_id: this.objectId,
-            pay_type: this.payType
+            pay_type: this.payType,
+            cash_type: this.cashType
           },
           headers: {
             Authorization: `Token ${this.$store.state.token}`
