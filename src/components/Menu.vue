@@ -120,6 +120,10 @@
             link: '/chem'
           },
           {
+            name: 'Остатки химии',
+            link: '/rest-chem'
+          },
+          {
             name: 'Управление техниками',
             link: '/techs'
           },
