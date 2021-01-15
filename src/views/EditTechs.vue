@@ -1,7 +1,10 @@
 <template>
   <section>
+    <b-field label="ФИО">
+      <b-input v-model="search" />
+    </b-field>
     <b-table
-      :data="data"
+      :data="body"
       :loading="loading"
       :hoverable="true"
       :mobile-cards="true"
@@ -49,8 +52,24 @@
         data: [],
         id: null,
         name: null,
-        isModalActive: false
+        isModalActive: false,
+        search: ''
       };
+    },
+    computed: {
+      body() {
+        if (this.search !== '') {
+          const body = [];
+          for (let i = 0; i < this.data.length; i++) {
+            const isSearch = ((this.data[i].name).toLowerCase()).includes(this.search);
+            if (isSearch) {
+              body.push(this.data[i]);
+            }
+          }
+          return body;
+        }
+        return this.data;
+      }
     },
     watch: {
       isModalActive() {

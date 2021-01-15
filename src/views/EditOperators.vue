@@ -34,8 +34,11 @@
           </b-button>
         </div>
       </b-field>
+      <b-field label="ФИО">
+        <b-input v-model="search" />
+      </b-field>
       <b-table
-        :data="data"
+        :data="body"
         :columns="head"
         :loading="loading"
         :hoverable="true"
@@ -80,6 +83,7 @@
         id: null,
         name: null,
         isModalActive: false,
+        search: '',
         head: [
           {
             field: 'name',
@@ -91,6 +95,21 @@
           }
         ]
       };
+    },
+    computed: {
+      body() {
+        if (this.search !== '') {
+          const body = [];
+          for (let i = 0; i < this.data.length; i++) {
+            const isSearch = ((this.data[i].name).toLowerCase()).includes(this.search);
+            if (isSearch) {
+              body.push(this.data[i]);
+            }
+          }
+          return body;
+        }
+        return this.data;
+      }
     },
     watch: {
       isModalActive() {
