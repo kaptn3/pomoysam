@@ -17,7 +17,7 @@
       @submit="submitForm"
     >
       <h2 class="title is-3">
-        Редактирование техника
+        Редактирование
       </h2>
       <b-field label="ФИО">
         <b-input
@@ -52,6 +52,10 @@
       id: {
         type: Number,
         required: true
+      },
+      userType: {
+        type: String,
+        default: 'admEditTehs'
       }
     },
     data() {
@@ -78,7 +82,7 @@
         data.set('id', this.id);
         data.set('name', this.newName || this.name);
         data.set('password', this.password);
-        const url = `${process.env.VUE_APP_API}admEditTehs/`;
+        const url = `${process.env.VUE_APP_API}${this.userType}/`;
         axios.post(url, data, this.$store.getters.config)
           .then(() => {
             this.status = 'ok';
