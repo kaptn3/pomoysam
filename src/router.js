@@ -18,6 +18,8 @@ import AdmBrokenStat from './views/AdmBrokenStat';
 import AdmChem from './views/AdmChem';
 import AdmTechs from './views/AdmTechs';
 import RestChem from './views/RestChem';
+import EditTechs from './views/EditTechs';
+import EditOperators from './views/EditOperators';
 
 Vue.use(Router);
 
@@ -121,6 +123,16 @@ export default new Router({
       path: '/rest-chem',
       name: 'RestChem',
       component: RestChem
+    },
+    {
+      path: '/edit-techs',
+      name: 'EditTechs',
+      component: EditTechs
+    },
+    {
+      path: '/edit-operators',
+      name: 'EditOperators',
+      component: EditOperators
     },
     {
       path: '/media/*',

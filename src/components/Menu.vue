@@ -134,6 +134,14 @@
           {
             name: 'Показания счетчков эл.энергии',
             link: '/energy-counters'
+          },
+          {
+            name: 'Редактирование техников',
+            link: '/edit-techs'
+          },
+          {
+            name: 'Редактирование операторов',
+            link: '/edit-operators'
           }
         ]
       };
