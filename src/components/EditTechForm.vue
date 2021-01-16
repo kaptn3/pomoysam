@@ -29,7 +29,6 @@
         <b-input
           v-model="password"
           type="password"
-          required
         />
       </b-field>
       <button class="button is-info is-fullwidth">
