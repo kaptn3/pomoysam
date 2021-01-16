@@ -101,7 +101,7 @@
         if (this.search !== '') {
           const body = [];
           for (let i = 0; i < this.data.length; i++) {
-            const isSearch = ((this.data[i].name).toLowerCase()).includes(this.search);
+            const isSearch = ((this.data[i].name).toLowerCase()).includes(this.search.toLowerCase());
             if (isSearch) {
               body.push(this.data[i]);
             }
