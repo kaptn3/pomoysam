@@ -73,10 +73,21 @@
           </b-button>
         </div>
       </b-field>
-      <div class="columns justify-between">
-        <p class="column total-users">
+      <div>
+        <p class="total-users">
           Всего записей: <strong>{{ cnt }}</strong>
         </p>
+        <div
+          v-if="totalData"
+          style="padding-bottom: 20px"
+        >
+          <p
+            v-for="item in totalData"
+            :key="item.chem_sort__name"
+          >
+            {{ item.chem_sort__name }}: <strong>{{ item.total_cnt }}</strong>
+          </p>
+        </div>
       </div>
       <b-table
         :data="data"
@@ -117,6 +128,7 @@
         coinsByObject: [],
         opType: null,
         chem: null,
+        totalData: null,
         head: [
           {
             field: 'operator',
@@ -179,6 +191,7 @@
               this.data = res.data.resp;
             }
             this.cnt = res.data.cnt;
+            this.totalData = res.data.totalData;
             this.loading = false;
           })
           .catch(() => {
