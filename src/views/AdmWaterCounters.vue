@@ -48,9 +48,15 @@
           </b-button>
         </div>
       </b-field>
-      <div class="columns justify-between">
-        <p class="column total-users">
+      <div>
+        <p class="total-users">
           Всего записей: <strong>{{ cnt }}</strong>
+        </p>
+        <p
+          v-if="diff"
+          class="total-users"
+        >
+          Общая разница показаний: <strong>{{ diff }}</strong>
         </p>
       </div>
       <b-table
@@ -89,6 +95,7 @@
     mixins: [table, getList],
     data() {
       return {
+        diff: undefined,
         coinsByObject: [],
         head: [
           {
@@ -106,6 +113,10 @@
           {
             field: 'count',
             label: 'Значение счетчика'
+          },
+          {
+            field: 'row_diff',
+            label: 'Разница показаний'
           }
         ]
       };
@@ -139,6 +150,17 @@
               this.data = this.data.concat(res.data.resp);
             } else {
               this.data = res.data.resp;
+            }
+            this.diff = this.objectId ? res.data.diff : undefined;
+            if (this.objectId) {
+              if (this.head.length === 4) {
+                this.head.push({
+                  field: 'row_diff',
+                  label: 'Разница показаний'
+                });
+              }
+            } else if (this.head.length === 5) {
+              this.head.splice(-1, 1);
             }
             this.cnt = res.data.cnt;
             this.loading = false;
