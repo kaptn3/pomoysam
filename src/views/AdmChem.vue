@@ -191,7 +191,7 @@
               this.data = res.data.resp;
             }
             this.cnt = res.data.cnt;
-            this.totalData = res.data.totalData;
+            this.totalData = res.data.total_data;
             this.loading = false;
           })
           .catch(() => {
