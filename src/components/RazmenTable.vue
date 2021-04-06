@@ -276,7 +276,7 @@
           }
           body[i].total_cnt = body[i].coins_cnt;
           const payType = this.data[i].pay_type;
-          if (payType === 1) {
+          if (payType === 1 || payType === 'Безнал') {
             body[i].pay_type = 'Безнал';
           } else {
             body[i].pay_type = 'Наличные';
